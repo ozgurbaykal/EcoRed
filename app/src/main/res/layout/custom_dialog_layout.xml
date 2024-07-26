@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/customToastContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/main_red"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp">
+        <ImageView
+            android:id="@+id/toastIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/check_circle" />
+
+
+        <TextView
+            android:id="@+id/toastTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Başlık"
+            android:layout_weight="1"
+            android:layout_marginLeft="8dp"
+            android:textSize="19sp"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+
+        <ImageView
+            android:id="@+id/closeDialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:clickable="true"
+            app:tint="@color/white"
+            android:src="@drawable/close" />
+    </LinearLayout>
+
+
+
+    <TextView
+        android:id="@+id/toastDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bu bir açıklamadır."
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:fontFamily="sans-serif-light"
+        android:layout_marginTop="15dp"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:layout_marginBottom="15dp"/>
+
+</LinearLayout>

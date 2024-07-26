@@ -1,3 +1,41 @@
 <resources>
     <string name="app_name">EcoRed</string>
+
+    <string name="join_title">Hi, \njoin the magical world of EcoRed!</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="or">Or</string>
+    <string name="sign_in_text">Welcome back! \nLogin to your account.</string>
+    <string name="sign_up_text">Create your account</string>
+    <string name="password">password</string>
+    <string name="password_again">password again</string>
+    <string name="mail">e-mail</string>
+    <string name="go_sign_up_text">Don\'t have an account? <u>Sign Up</u></string>
+    <string name="go_sign_in_text">Already have account? <u>Sign In</u></string>
+
+    <string name="error">Error!</string>
+    <string name="warning">Warning!</string>
+    <string name="success">Success!</string>
+    <string name="info">Info!</string>
+
+
+    <string name="character_length_error">Your password must be between 8 and 30 characters.</string>
+    <string name="need_digit_error">Your password must contain numbers.</string>
+    <string name="need_letter_error">Your password must contain letters.</string>
+    <string name="password_match_error">Passwords do not match.</string>
+    <string name="privacy_not_checked_error">Please read and accept the privacy agreement.</string>
+    <string name="privacy_title_button">I have read and accept the <u>privacy agreement</u>.</string>
+
+
+    <string name="please_fill_all_fields">Please make sure you fill in all fields.</string>
+    <string name="invalid_mail">Invalid email address format.</string>
+    <string name="sign_in_error">Login failed, please try again.</string>
+    <string name="invalid_password">Please make sure you follow the password rules.</string>
+    <string name="mail_already_used">This email address is already in use.</string>
+    <string name="sign_up_error">We encountered an error while registering, please try again.</string>
+    <string name="password_match_error_2">Please make sure the passwords match.</string>
+
+    <string name="name">name</string>
+    <string name="last_name">last name</string>
+
 </resources>

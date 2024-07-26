@@ -1,12 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <style name="Base.Theme.EcoRed" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">@color/black</item>
 
 
     </style>
 
-    <style name="Theme.EcoRed" parent="Base.Theme.EcoRed" >
+    <style name="Theme.EcoRed" parent="Base.Theme.EcoRed">
         <item name="colorPrimary">@color/black</item>
 
+    </style>
+
+
+    <style name="MyCheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="buttonTint">@color/main_red</item>
     </style>
 </resources>
