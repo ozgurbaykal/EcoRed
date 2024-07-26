@@ -1,0 +1,12 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Base.Theme.EcoRed" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/black</item>
+
+
+    </style>
+
+    <style name="Theme.EcoRed" parent="Base.Theme.EcoRed" >
+        <item name="colorPrimary">@color/black</item>
+
+    </style>
+</resources>
