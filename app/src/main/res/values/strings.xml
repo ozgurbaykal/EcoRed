@@ -38,4 +38,12 @@
     <string name="name">name</string>
     <string name="last_name">last name</string>
 
+    <string name="next">Next</string>
+    <string name="walkthrough_title_1">Welcome to EcoRed</string>
+    <string name="walkthrough_title_2">Shop Smart with EcoRed</string>
+    <string name="walkthrough_title_3">Stay Updated</string>
+    <string name="walkthrough_desc_1">Discover endless shopping possibilities at EcoRed! From fashion to electronics, we have it all. Enjoy fast delivery and great service.</string>
+    <string name="walkthrough_desc_2">Browse our extensive catalog, add items to your cart, and make secure payments. Enjoy personalized recommendations and exclusive deals.</string>
+    <string name="walkthrough_desc_3">Allow EcoRed to send you notifications about the latest offers, order updates, and more. Stay informed and get the best shopping experience.</string>
+
 </resources>
