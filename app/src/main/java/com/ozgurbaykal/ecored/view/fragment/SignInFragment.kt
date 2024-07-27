@@ -9,6 +9,7 @@ import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
@@ -20,6 +21,7 @@ import com.ozgurbaykal.ecored.view.BaseFragment
 import com.ozgurbaykal.ecored.view.MainActivity
 import com.ozgurbaykal.ecored.view.customs.CustomDialogFragment
 import com.ozgurbaykal.ecored.view.customs.DialogTypes
+import com.ozgurbaykal.ecored.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,6 +32,8 @@ class SignInFragment : BaseFragment() {
 
     var customToast: CustomDialogFragment? = null
     private lateinit var auth: FirebaseAuth
+    private val userViewModel: UserViewModel by viewModels()
+
 
     private lateinit var mailInput: TextInputEditText
     private lateinit var passwordInput: TextInputEditText
@@ -47,6 +51,29 @@ class SignInFragment : BaseFragment() {
         var editTextArray = listOf(mailInput, passwordInput)
 
         auth = Firebase.auth
+
+
+        userViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            manageProgressBar(isLoading)
+        }
+
+        userViewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
+            errorMessage?.let {
+                customToast?.show(
+                    getString(R.string.error),
+                    it,
+                    dialogType = DialogTypes.ERROR
+                )
+            }
+        }
+
+        userViewModel.currentUser.observe(viewLifecycleOwner) { user ->
+            user?.let {
+                startActivity(Intent(requireActivity(), MainActivity::class.java))
+                activity?.finish()
+            }
+        }
+
 
         binding.signInButton.setOnClickListener {
             if (emptyAndValidateInputControl(editTextArray)) {
@@ -78,9 +105,12 @@ class SignInFragment : BaseFragment() {
                 if (task.isSuccessful) {
                     val user = FirebaseAuth.getInstance().currentUser
                     //DIRECT TO MAINACTIVITY
-                    manageProgressBar(false, 0)
 
-                    startActivity(Intent(requireActivity(), MainActivity::class.java))
+                    val userId = user?.uid
+                    if (userId != null) {
+                        userViewModel.fetchUser(userId)
+                    }
+
 
                 } else {
                     manageProgressBar(false, 0)

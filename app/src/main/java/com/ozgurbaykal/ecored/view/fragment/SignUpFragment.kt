@@ -13,11 +13,13 @@ import android.widget.CheckBox
 import android.widget.LinearLayout
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.userProfileChangeRequest
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.ozgurbaykal.ecored.R
 import com.ozgurbaykal.ecored.databinding.FragmentSignUpBinding
@@ -26,6 +28,7 @@ import com.ozgurbaykal.ecored.view.BaseFragment
 import com.ozgurbaykal.ecored.view.MainActivity
 import com.ozgurbaykal.ecored.view.customs.CustomDialogFragment
 import com.ozgurbaykal.ecored.view.customs.DialogTypes
+import com.ozgurbaykal.ecored.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,6 +42,7 @@ class SignUpFragment : BaseFragment() {
 
     var customToast: CustomDialogFragment? = null
     private lateinit var auth: FirebaseAuth
+    private val userViewModel: UserViewModel by viewModels()
 
     private lateinit var mailInput: TextInputEditText
     private lateinit var passwordInput: TextInputEditText
@@ -75,6 +79,28 @@ class SignUpFragment : BaseFragment() {
         var editTextArray = listOf(mailInput, passwordInput, passwordAgainInput, name, lastName)
 
         auth = Firebase.auth
+
+        userViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            manageProgressBar(isLoading)
+        }
+
+        userViewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
+            errorMessage?.let {
+                customToast?.show(
+                    getString(R.string.error),
+                    it,
+                    dialogType = DialogTypes.ERROR
+                )
+            }
+        }
+
+        userViewModel.currentUser.observe(viewLifecycleOwner) { user ->
+            user?.let {
+                startActivity(Intent(requireActivity(), MainActivity::class.java))
+                activity?.finish()
+            }
+        }
+
 
         binding.signUpButton.setOnClickListener {
             if (emptyAndValidateInputControl(editTextArray)) {
@@ -221,11 +247,15 @@ class SignUpFragment : BaseFragment() {
 
                     user?.updateProfile(profileUpdates)?.addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            //DIRECT TO MAINACTIVITY
-                            manageProgressBar(false, 0)
 
-                            startActivity(Intent(requireActivity(), MainActivity::class.java))
+                            val user = User(
+                                userId = uid.toString(),
+                                email = email,
+                                name = name,
+                                lastName = lastName,
+                            )
 
+                            userViewModel.addUser(user)
                         }
                     }
 

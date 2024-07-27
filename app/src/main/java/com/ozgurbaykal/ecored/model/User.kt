@@ -1,9 +1,14 @@
 package com.ozgurbaykal.ecored.model
 
+
+import com.google.firebase.Timestamp
+
 data class User(
-    val id: Int?,
-    val name: String,
-    val lastName: String,
-    val email: String,
-    val firebaseUid: String?,
+    val userId: String = "",
+    val email: String = "",
+    val name: String = "",
+    val lastName: String = "",
+    val createdAt: Timestamp = Timestamp.now(),
+    val address: String = "",
+    val phoneNumber: String = ""
 )

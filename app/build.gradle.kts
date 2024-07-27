@@ -60,9 +60,10 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("androidx.fragment:fragment-ktx:1.8.2")
     implementation("com.google.firebase:firebase-auth")
-    implementation ("com.airbnb.android:lottie:5.2.0")
-    implementation ("androidx.viewpager2:viewpager2:1.1.0")
-
+    implementation("com.airbnb.android:lottie:5.2.0")
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.google.firebase:firebase-firestore")
 }
 
 kapt {
