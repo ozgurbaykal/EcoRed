@@ -11,6 +11,7 @@ import com.ozgurbaykal.ecored.R
 import com.ozgurbaykal.ecored.databinding.ActivityLoginBinding
 import com.ozgurbaykal.ecored.databinding.ActivityMainBinding
 import com.ozgurbaykal.ecored.util.SharedPreferencesHelper
+import com.ozgurbaykal.ecored.view.fragment.HomeFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,6 +37,10 @@ class MainActivity : BaseActivity() {
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_home -> {
+
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.mainActivityFragmentView, HomeFragment(), "HomeFragmentTAG")
+                        .commit()
 
                     true
                 }
