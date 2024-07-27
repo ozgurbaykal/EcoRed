@@ -33,6 +33,9 @@ class HomeFragment : BaseFragment() {
 
     private var bannerUrls: List<String> = emptyList()
 
+    private var countDownTimer: CountDownTimer? = null
+
+
     private val handler = Handler(Looper.getMainLooper())
     private val runnable = object : Runnable {
         override fun run() {
@@ -91,16 +94,16 @@ class HomeFragment : BaseFragment() {
         //FAKE COUNTDOWN FOR DEAL OF THE DAY
         val totalMillis = 21 * 60 * 60 * 1000L + 12 * 60 * 1000L
 
-        object : CountDownTimer(totalMillis, 1000) {
+        countDownTimer = object : CountDownTimer(totalMillis, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val hours = (millisUntilFinished / (1000 * 60 * 60)).toInt()
                 val minutes = ((millisUntilFinished / (1000 * 60)) % 60).toInt()
                 val seconds = ((millisUntilFinished / 1000) % 60).toInt()
-                binding.dealOfDayTimeText.text = String.format("%02dh %02dm %02ds left", hours, minutes, seconds)
+                _binding?.dealOfDayTimeText?.text = String.format("%02dh %02dm %02ds left", hours, minutes, seconds)
             }
 
             override fun onFinish() {
-                binding.dealOfDayTimeText.text = "0h 0m 0s"
+                _binding?.dealOfDayTimeText?.text = "0h 0m 0s"
             }
         }.start()
     }
@@ -121,6 +124,10 @@ class HomeFragment : BaseFragment() {
         }
     }
 
+    private fun stopCountdownTimer() {
+        countDownTimer?.cancel()
+    }
+
     private fun startAutoScroll() {
         handler.postDelayed(runnable, 3000)
     }
@@ -134,6 +141,8 @@ class HomeFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        stopAutoScroll()
+        stopCountdownTimer()
     }
 
 }
