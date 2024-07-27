@@ -1,5 +1,7 @@
 package com.ozgurbaykal.ecored.view.adapter
 
+import android.graphics.Color
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,12 +33,21 @@ class ProductAdapter(private val productList: List<Product>) : RecyclerView.Adap
                 productPrice.text = "$${product.price}"
                 if (product.discountPercentage > 0) {
                     productDiscountedPrice.visibility = View.VISIBLE
-                    productDiscountPercentage.visibility = View.VISIBLE
+                    productDiscountPercentageLayout.visibility = View.VISIBLE
                     productDiscountedPrice.text = "$${product.discountedPrice}"
                     productDiscountPercentage.text = "${product.discountPercentage}% OFF"
+                    productPrice.apply {
+                        paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                        textSize = 11F
+                    }
+                    productDiscountedPrice.apply {
+                        textSize = 15F
+                    }
+
                 } else {
                     productDiscountedPrice.visibility = View.GONE
-                    productDiscountPercentage.visibility = View.GONE
+                    productDiscountPercentageLayout.visibility = View.GONE
+                    productPrice.setTextColor(Color.BLACK)
                 }
             }
         }

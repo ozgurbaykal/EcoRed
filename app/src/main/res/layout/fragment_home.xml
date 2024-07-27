@@ -4,11 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp">
+    android:paddingTop="15dp"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp">
 
-    <ScrollView
+    <FrameLayout
+        android:id="@+id/progressBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clickable="true"
+        android:elevation="40dp"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="heart_loading.json"
+            app:lottie_loop="true" />
+    </FrameLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +61,7 @@
                     android:layout_height="45dp"
                     android:layout_weight="1"
                     android:background="@drawable/edittext_background"
-                    android:hint="Ara"
+                    android:hint="@string/search"
                     android:inputType="text"
                     android:maxLength="100"
                     android:padding="10dp"
@@ -57,7 +83,7 @@
                 android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="2dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +92,7 @@
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPagerBanner"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="160dp"
                     android:layout_marginTop="10dp" />
 
 
@@ -113,7 +139,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Deal of the Day"
+                        android:text="@string/daily_deal_title"
                         android:textColor="@color/white"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -132,12 +158,12 @@
                             app:tint="@color/white" />
 
                         <TextView
+                            android:id="@+id/dealOfDayTimeText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
-                            android:text="24h 12d 13h left"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="12sp"/>
 
 
                     </LinearLayout>
@@ -153,7 +179,7 @@
                     android:background="@drawable/button_with_border_radius_8"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:text="View All"
+                    android:text="@string/view_all"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
@@ -166,7 +192,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Highlights Products"
+                android:text="@string/highlight_products"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -179,18 +205,19 @@
                 android:id="@+id/recyclerViewHiglights"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal"
+                android:scrollbars="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toBottomOf="@+id/middleTextview"
-                tools:listitem="@layout/product_item"
-                android:layout_marginTop="5dp"/>
+                tools:listitem="@layout/product_item" />
 
             <TextView
                 android:id="@+id/middleTextview2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Categories"
+                android:text="@string/categories"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -203,9 +230,9 @@
                 android:id="@+id/recyclerViewCatalog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:layout_constraintTop_toBottomOf="@+id/middleTextview2"
-                android:layout_marginTop="5dp"/>
+                app:layout_constraintTop_toBottomOf="@+id/middleTextview2" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

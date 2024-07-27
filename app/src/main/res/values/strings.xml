@@ -51,4 +51,11 @@
     <string name="my_cart">Cart</string>
     <string name="my_account">My Account</string>
 
+
+    <string name="search">Search</string>
+    <string name="daily_deal_title">Deal of the Day</string>
+    <string name="view_all">View All</string>
+    <string name="highlight_products">Highlights Products</string>
+    <string name="categories">Categories</string>
+
 </resources>

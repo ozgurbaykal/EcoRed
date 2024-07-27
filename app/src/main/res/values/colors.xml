@@ -4,6 +4,9 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="main_red">#DC0004</color>
+    <color name="main_blue">#00DCD8</color>
+    <color name="main_green">#72dc00</color>
+    <color name="main_purple">#6A00DC</color>
 
     <color name="custom_yellow">#FF9800</color>
     <color name="custom_yellow_green">#C8DF52</color>

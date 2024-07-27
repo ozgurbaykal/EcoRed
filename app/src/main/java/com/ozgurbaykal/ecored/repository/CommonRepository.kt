@@ -3,6 +3,7 @@ package com.ozgurbaykal.ecored.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.ozgurbaykal.ecored.model.Banner
 import com.ozgurbaykal.ecored.model.Catalog
 import com.ozgurbaykal.ecored.model.Product
 import kotlinx.coroutines.tasks.await
@@ -32,6 +33,17 @@ class CommonRepository @Inject constructor(
                 .get()
                 .await()
             snapshot.toObjects(Catalog::class.java)
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    suspend fun getBanners(): List<Banner> {
+        return try {
+            val snapshot = db.collection("banners")
+                .get()
+                .await()
+            snapshot.toObjects(Banner::class.java)
         } catch (e: Exception) {
             emptyList()
         }

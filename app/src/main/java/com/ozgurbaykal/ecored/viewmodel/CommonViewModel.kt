@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ozgurbaykal.ecored.model.Banner
 import com.ozgurbaykal.ecored.model.Catalog
 import com.ozgurbaykal.ecored.model.Product
 import com.ozgurbaykal.ecored.repository.CommonRepository
@@ -24,6 +25,8 @@ class CommonViewModel @Inject constructor(
     private val _catalogs = MutableLiveData<List<Catalog>>()
     val catalogs: LiveData<List<Catalog>> get() = _catalogs
 
+    private val _banners = MutableLiveData<List<Banner>>()
+    val banners: LiveData<List<Banner>> get() = _banners
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
@@ -38,6 +41,21 @@ class CommonViewModel @Inject constructor(
             try {
                 val catalogs = commonRepository.getCatalogs()
                 _catalogs.value = catalogs
+                _isLoading.value = false
+                _errorMessage.value = null
+            } catch (e: Exception) {
+                _isLoading.value = false
+                _errorMessage.value = e.message
+            }
+        }
+    }
+
+    fun fetchBanners() {
+        _isLoading.value = true
+        viewModelScope.launch {
+            try {
+                val banners = commonRepository.getBanners()
+                _banners.value = banners
                 _isLoading.value = false
                 _errorMessage.value = null
             } catch (e: Exception) {
