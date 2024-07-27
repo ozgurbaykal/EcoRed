@@ -46,4 +46,9 @@
     <string name="walkthrough_desc_2">Browse our extensive catalog, add items to your cart, and make secure payments. Enjoy personalized recommendations and exclusive deals.</string>
     <string name="walkthrough_desc_3">Allow EcoRed to send you notifications about the latest offers, order updates, and more. Stay informed and get the best shopping experience.</string>
 
+    <string name="home_page">Home</string>
+    <string name="my_favorites">Favorites</string>
+    <string name="my_cart">Cart</string>
+    <string name="my_account">My Account</string>
+
 </resources>

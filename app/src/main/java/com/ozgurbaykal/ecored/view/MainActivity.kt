@@ -33,5 +33,31 @@ class MainActivity : BaseActivity() {
         }
 
 
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_home -> {
+
+                    true
+                }
+                R.id.navigation_favorites -> {
+
+                    true
+                }
+                R.id.navigation_cart -> {
+
+                    true
+                }
+                R.id.navigation_account -> {
+
+                    true
+                }
+                else -> false
+            }
+        }
+
+
+        binding.bottomNavigationView.selectedItemId = R.id.navigation_home
+
+
     }
 }

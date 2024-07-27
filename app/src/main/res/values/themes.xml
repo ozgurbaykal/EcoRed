@@ -2,12 +2,14 @@
 
     <style name="Base.Theme.EcoRed" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">@color/black</item>
+        <item name="bottomNavigationStyle">@style/CustomBottomNavigation</item>
 
 
     </style>
 
     <style name="Theme.EcoRed" parent="Base.Theme.EcoRed">
         <item name="colorPrimary">@color/black</item>
+        <item name="bottomNavigationStyle">@style/CustomBottomNavigation</item>
 
     </style>
 
@@ -16,4 +18,10 @@
         <item name="android:textColor">@android:color/black</item>
         <item name="buttonTint">@color/main_red</item>
     </style>
+
+
+    <style name="CustomBottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemBackground">@android:color/transparent</item>
+    </style>
+
 </resources>
