@@ -3,6 +3,7 @@
     <style name="Base.Theme.EcoRed" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">@color/black</item>
         <item name="bottomNavigationStyle">@style/CustomBottomNavigation</item>
+        <item name = "android:windowBackground">@color/background_gray</item>
 
 
     </style>
@@ -10,6 +11,7 @@
     <style name="Theme.EcoRed" parent="Base.Theme.EcoRed">
         <item name="colorPrimary">@color/black</item>
         <item name="bottomNavigationStyle">@style/CustomBottomNavigation</item>
+        <item name = "android:windowBackground">@color/background_gray</item>
 
     </style>
 

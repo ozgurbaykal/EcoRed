@@ -1,5 +1,6 @@
 package com.ozgurbaykal.ecored.view.adapter
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Paint
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.ozgurbaykal.ecored.R
 import com.ozgurbaykal.ecored.databinding.ProductItemBinding
 import com.ozgurbaykal.ecored.model.Product
+import com.ozgurbaykal.ecored.view.ProductViewActivity
 
 class ProductAdapter(private val productList: List<Product>) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
@@ -45,11 +47,19 @@ class ProductAdapter(private val productList: List<Product>) : RecyclerView.Adap
                     }
 
                 } else {
-                    productDiscountedPrice.visibility = View.GONE
-                    productDiscountPercentageLayout.visibility = View.GONE
+                    productDiscountedPrice.visibility = View.INVISIBLE
+                    productDiscountPercentageLayout.visibility = View.INVISIBLE
                     productPrice.setTextColor(Color.BLACK)
                 }
+
+                root.setOnClickListener {
+                    val intent = Intent(root.context, ProductViewActivity::class.java)
+                    intent.putExtra("product", product)
+                    root.context.startActivity(intent)
+                }
             }
+
+
         }
     }
 }

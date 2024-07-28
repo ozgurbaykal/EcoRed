@@ -34,6 +34,8 @@ class CommonViewModel @Inject constructor(
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> get() = _errorMessage
 
+    private val _generalProducts = MutableLiveData<List<Product>>()
+    val generalProducts: LiveData<List<Product>> get() = _generalProducts
 
     fun fetchCatalogs() {
         _isLoading.value = true
@@ -71,6 +73,22 @@ class CommonViewModel @Inject constructor(
             try {
                 val products = commonRepository.getDiscountedProducts()
                 _discountedProducts.value = products
+                _isLoading.value = false
+                _errorMessage.value = null
+            } catch (e: Exception) {
+                _isLoading.value = false
+                _errorMessage.value = e.message
+            }
+        }
+    }
+
+
+    fun getProductsWithCategory(categoryId: String, currentProductId: String = "") {
+        _isLoading.value = true
+        viewModelScope.launch {
+            try {
+                val products = commonRepository.getProductsWithCategoryId(categoryId, currentProductId)
+                _generalProducts.value = products
                 _isLoading.value = false
                 _errorMessage.value = null
             } catch (e: Exception) {

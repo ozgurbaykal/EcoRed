@@ -14,5 +14,6 @@
     <color name="custom_green">#4CAF50</color>
 
     <color name="gray">#8A8A8A</color>
+    <color name="background_gray">#F2F2F2</color>
 
 </resources>

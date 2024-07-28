@@ -15,7 +15,11 @@
         android:theme="@style/Theme.EcoRed"
         android:name=".EcoRedApplication"
         tools:targetApi="31">
-
+        <activity
+            android:name=".view.ProductViewActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+        </activity>
         <activity
             android:name=".view.MainActivity"
             android:exported="true"

@@ -1,6 +1,7 @@
 package com.ozgurbaykal.ecored.repository
 
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.ozgurbaykal.ecored.model.Banner
@@ -25,6 +26,24 @@ class CommonRepository @Inject constructor(
             emptyList()
         }
     }
+    suspend fun getProductsWithCategoryId(categoryId: String, currentProductId: String = ""): List<Product> {
+        return try {
+            val snapshot = db.collection("products")
+                .whereEqualTo("categoryId", categoryId)
+                .get()
+                .await()
+            val products = snapshot.toObjects(Product::class.java)
+
+            if(currentProductId.isNotEmpty()){
+                return products.filter { it.id != currentProductId }
+            }
+
+            return products
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
 
     suspend fun getCatalogs(): List<Catalog> {
         return try {
