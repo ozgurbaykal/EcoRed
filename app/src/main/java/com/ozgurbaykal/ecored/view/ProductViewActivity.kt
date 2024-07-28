@@ -19,6 +19,7 @@ import com.ozgurbaykal.ecored.databinding.ActivityMainBinding
 import com.ozgurbaykal.ecored.databinding.ActivityProductViewBinding
 import com.ozgurbaykal.ecored.model.Product
 import com.ozgurbaykal.ecored.util.SharedPreferencesHelper
+import com.ozgurbaykal.ecored.view.adapter.GalleryImageAdapter
 import com.ozgurbaykal.ecored.view.adapter.ProductAdapter
 import com.ozgurbaykal.ecored.view.adapter.ProductImageAdapter
 import com.ozgurbaykal.ecored.view.fragment.HomeFragment
@@ -114,6 +115,14 @@ class ProductViewActivity : BaseActivity() {
         binding.productImagesViewPager.adapter = imageAdapter
 
         setupDescription(product.description)
+
+
+        val galleryAdapter = GalleryImageAdapter(product.images) { position ->
+            binding.productImagesViewPager.currentItem = position
+        }
+        binding.viewPageGallery.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.viewPageGallery.adapter = galleryAdapter
+
     }
 
     private fun setupDescription(description: String) {

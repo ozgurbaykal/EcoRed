@@ -56,10 +56,39 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/productImagesViewPager"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/productImagesViewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/viewPageGallery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:orientation="horizontal"
+                    android:scrollbars="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginEnd="60dp"
+                    tools:listitem="@layout/item_gallery"
+                    android:layout_marginBottom="8dp"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <TextView
                 android:id="@+id/categoryText"
@@ -81,16 +110,37 @@
                 android:layout_marginEnd="10dp"
                 android:orientation="horizontal">
 
-
-                <TextView
-                    android:id="@+id/productTitle"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Lorem Ipsum"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/productTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Lorem Ipsum"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginEnd="10dp"/>
+
+
+                    <TextView
+                        android:id="@+id/brandText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="Brand"
+                        android:textColor="@color/gray"
+                        android:textSize="14sp" />
+
+
+                </LinearLayout>
+
+
+
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/productDiscountPercentageLayout"
@@ -115,51 +165,61 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/brandText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="10dp"
-                android:text="Brand"
-                android:textColor="@color/gray"
-                android:textSize="14sp" />
 
-            <TextView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="10dp"
-                android:layout_weight="1"
+                app:cardCornerRadius="3dp">
 
-                android:text="Product Description"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
 
-            <TextView
-                android:id="@+id/productDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginEnd="10dp"
-                android:text="Lorem Ipsum"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/readMore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:text="Read More"
-                android:textColor="@color/main_red"
-                android:textSize="14sp"
-                android:visibility="gone" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="Product Description"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/productDesc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="Lorem Ipsum"
+                        android:textColor="@color/gray"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/readMore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="Read More"
+                        android:textColor="@color/main_red"
+                        android:textSize="14sp"
+                        android:visibility="gone"
+                        android:layout_marginBottom="10dp"/>
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
 
             <TextView
                 android:id="@+id/middleTextview"
