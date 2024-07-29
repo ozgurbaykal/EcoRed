@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.ozgurbaykal.ecored.R
 import com.ozgurbaykal.ecored.databinding.FragmentHomeBinding
 import com.ozgurbaykal.ecored.view.BaseFragment
 import com.ozgurbaykal.ecored.view.adapter.BannerAdapter
@@ -58,7 +59,8 @@ class HomeFragment : BaseFragment() {
         binding.recyclerViewHiglights.layoutManager = layoutManagerHiglight
 
         commonViewModel.discountedProducts.observe(viewLifecycleOwner) { products ->
-            binding.recyclerViewHiglights.adapter = ProductAdapter(products)
+            val shuffledProducts = products.shuffled()
+            binding.recyclerViewHiglights.adapter = ProductAdapter(shuffledProducts)
         }
 
         commonViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
@@ -74,7 +76,20 @@ class HomeFragment : BaseFragment() {
         commonViewModel.catalogs.observe(viewLifecycleOwner) { catalogs ->
             Log.i("HomeFragment", catalogs.toString())
 
-            binding.recyclerViewCatalog.adapter = CatalogAdapter(catalogs)
+            binding.recyclerViewCatalog.adapter = CatalogAdapter(catalogs) { catalog ->
+                val bundle = Bundle().apply {
+                    putString("catalogId", catalog.id)
+                    putString("catalogTitle", catalog.name)
+                }
+                changeFragmentWithBundle(ProductListFragment(), R.id.mainActivityFragmentView, "ProductListFragmentTAG", bundle)
+            }
+        }
+
+        binding.viewAllButton.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("caller", "viewAllButton")
+            }
+            changeFragmentWithBundle(ProductListFragment(), R.id.mainActivityFragmentView, "ProductListFragmentTAG", bundle)
         }
 
         commonViewModel.banners.observe(viewLifecycleOwner) { banners ->

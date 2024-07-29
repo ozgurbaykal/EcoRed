@@ -1,10 +1,13 @@
 package com.ozgurbaykal.ecored.viewmodel
 
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.QuerySnapshot
 import com.ozgurbaykal.ecored.model.Banner
 import com.ozgurbaykal.ecored.model.Catalog
 import com.ozgurbaykal.ecored.model.Product
@@ -37,12 +40,30 @@ class CommonViewModel @Inject constructor(
     private val _generalProducts = MutableLiveData<List<Product>>()
     val generalProducts: LiveData<List<Product>> get() = _generalProducts
 
+    private val loadedProducts = mutableListOf<Product>()
+    var lastVisibleDocument: DocumentSnapshot? = null
+
     fun fetchCatalogs() {
         _isLoading.value = true
         viewModelScope.launch {
             try {
                 val catalogs = commonRepository.getCatalogs()
                 _catalogs.value = catalogs
+                _isLoading.value = false
+                _errorMessage.value = null
+            } catch (e: Exception) {
+                _isLoading.value = false
+                _errorMessage.value = e.message
+            }
+        }
+    }
+
+    fun fetchRandomDiscountedProducts(limit: Int = 2) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            try {
+                val products = commonRepository.getRandomDiscountedProducts(limit)
+                _generalProducts.value = products
                 _isLoading.value = false
                 _errorMessage.value = null
             } catch (e: Exception) {
@@ -97,4 +118,19 @@ class CommonViewModel @Inject constructor(
             }
         }
     }
+
+    fun loadProducts(limit: Long, categoryId: String? = null) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            val (newProducts, newLastVisibleDocument) = commonRepository.getProducts(limit, lastVisibleDocument, categoryId)
+            Log.i("CommonViewModel", "newProducts -> ${newProducts.toString()}")
+            if (newProducts.isNotEmpty()) {
+                lastVisibleDocument = newLastVisibleDocument
+                loadedProducts.addAll(newProducts)
+                _generalProducts.value = loadedProducts
+            }
+            _isLoading.value = false
+        }
+    }
+
 }

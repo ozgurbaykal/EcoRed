@@ -2,8 +2,10 @@ package com.ozgurbaykal.ecored.repository
 
 
 import android.util.Log
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.ozgurbaykal.ecored.model.Banner
 import com.ozgurbaykal.ecored.model.Catalog
 import com.ozgurbaykal.ecored.model.Product
@@ -19,6 +21,7 @@ class CommonRepository @Inject constructor(
             val snapshot = db.collection("products")
                 .whereGreaterThan("discountPercentage", 0)
                 .orderBy("discountPercentage", Query.Direction.DESCENDING)
+                .limit(8)
                 .get()
                 .await()
             snapshot.toObjects(Product::class.java)
@@ -39,6 +42,19 @@ class CommonRepository @Inject constructor(
             }
 
             return products
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    suspend fun getRandomDiscountedProducts(limit: Int = 2): List<Product> {
+        return try {
+            val snapshot = db.collection("products")
+                .whereGreaterThan("discountPercentage", 0)
+                .get()
+                .await()
+            val products = snapshot.toObjects(Product::class.java)
+            products.shuffled().take(limit)
         } catch (e: Exception) {
             emptyList()
         }
@@ -67,4 +83,38 @@ class CommonRepository @Inject constructor(
             emptyList()
         }
     }
+
+    suspend fun getProducts(
+        limit: Long,
+        lastVisible: DocumentSnapshot? = null,
+        categoryId: String? = null
+    ): Pair<List<Product>, DocumentSnapshot?> {
+        return try {
+            val query = if (categoryId != null) {
+                db.collection("products")
+                    .whereEqualTo("categoryId", categoryId)
+                    .orderBy("createdAt", Query.Direction.DESCENDING)
+                    .limit(limit)
+            } else {
+                db.collection("products")
+                    .orderBy("createdAt", Query.Direction.DESCENDING)
+                    .limit(limit)
+            }
+
+            val snapshot = if (lastVisible != null) {
+                query.startAfter(lastVisible).get().await()
+            } else {
+                query.get().await()
+            }
+
+            val products = snapshot.toObjects(Product::class.java)
+            val lastVisibleDocument = snapshot.documents.lastOrNull()
+            Pair(products.mapIndexed { index, product -> product.copy(id = snapshot.documents[index].id) }, lastVisibleDocument)
+        } catch (e: Exception) {
+            Pair(emptyList(), null)
+        }
+    }
+
+
+
 }

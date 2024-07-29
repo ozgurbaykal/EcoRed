@@ -33,6 +33,8 @@ class ProductAdapter(private val productList: List<Product>) : RecyclerView.Adap
                 Glide.with(root.context).load(product.images[0]).into(productImage)
                 productTitle.text = product.title
                 productPrice.text = "$${product.price}"
+                productDesc.text = product.description
+
                 if (product.discountPercentage > 0) {
                     productDiscountedPrice.visibility = View.VISIBLE
                     productDiscountPercentageLayout.visibility = View.VISIBLE
@@ -45,11 +47,14 @@ class ProductAdapter(private val productList: List<Product>) : RecyclerView.Adap
                     productDiscountedPrice.apply {
                         textSize = 15F
                     }
+                    productDesc.visibility = View.GONE
 
                 } else {
-                    productDiscountedPrice.visibility = View.INVISIBLE
-                    productDiscountPercentageLayout.visibility = View.INVISIBLE
+                    productDiscountedPrice.visibility = View.GONE
+                    productDiscountPercentageLayout.visibility = View.GONE
                     productPrice.setTextColor(Color.BLACK)
+                    productDesc.visibility = View.VISIBLE
+
                 }
 
                 root.setOnClickListener {
