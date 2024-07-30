@@ -102,6 +102,10 @@ class SearchFragment : BaseFragment() {
         commonViewModel.searchResults.observe(viewLifecycleOwner) { results ->
             searchHistoryAdapter.updateItems(results.map { SearchHistoryItem(it.title, it.id) }, isSearchResults = true)
         }
+
+        commonViewModel.isLoading.observe(viewLifecycleOwner) { loading ->
+            manageProgressBar(loading, 5000)
+        }
     }
 
 

@@ -143,35 +143,45 @@ class CommonViewModel @Inject constructor(
 
     fun fetchSearchHistory(userId: String) {
         viewModelScope.launch {
+            _isLoading.value = true
             val history = commonRepository.getSearchHistory(userId)
             _searchHistory.value = history
+            _isLoading.value = false
         }
     }
 
     fun removeSearchHistoryItem(query: String, userId: String) {
         viewModelScope.launch {
+            _isLoading.value = true
             commonRepository.removeSearchHistoryItem(userId, query)
             fetchSearchHistory(userId)
+            _isLoading.value = false
         }
     }
 
     fun clearSearchHistory(userId: String) {
         viewModelScope.launch {
+            _isLoading.value = true
             commonRepository.clearSearchHistory(userId)
             fetchSearchHistory(userId)
+            _isLoading.value = false
         }
     }
 
     fun addSearchHistory(query: String, productId: String, userId: String) {
         viewModelScope.launch {
+            _isLoading.value = true
             commonRepository.addSearchToHistory(userId, query, productId)
+            _isLoading.value = false
         }
     }
 
     fun searchProducts(query: String) {
         viewModelScope.launch {
+            _isLoading.value = true
             val results = commonRepository.searchProducts(query)
             _searchResults.value = results
+            _isLoading.value = false
         }
     }
 
@@ -183,10 +193,14 @@ class CommonViewModel @Inject constructor(
             _isLoading.value = false
         }
     }
+
     fun getProductById(productId: String, callback: (Product?) -> Unit) {
         viewModelScope.launch {
+            _isLoading.value = true
             val product = commonRepository.getProductById(productId)
             callback(product)
+            _isLoading.value = false
         }
     }
+
 }
