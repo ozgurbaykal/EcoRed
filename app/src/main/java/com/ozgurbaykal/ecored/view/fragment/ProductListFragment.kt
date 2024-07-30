@@ -60,7 +60,7 @@ class ProductListFragment : BaseFragment() {
             binding.searchEditText.visibility = View.GONE
             binding.title.visibility = View.GONE
             binding.titleTopLayout.visibility = View.VISIBLE
-            binding.titleTopLayout.text = "My Favorites"
+            binding.titleTopLayout.text =  getString(R.string.my_favorites)
         } else {
             if (catalogTitle != null)
                 binding.title.text = catalogTitle.toString()

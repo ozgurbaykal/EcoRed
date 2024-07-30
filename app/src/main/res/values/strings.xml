@@ -58,4 +58,12 @@
     <string name="highlight_products">Highlights Products</string>
     <string name="categories">Categories</string>
 
+    <string name="product_description">Product Description</string>
+    <string name="add_to_cart">Add to cart</string>
+    <string name="history">History</string>
+    <string name="clear_all">Clear All</string>
+    <string name="similar_products">Similar Products</string>
+    <string name="read_more">Read More</string>
+
+
 </resources>

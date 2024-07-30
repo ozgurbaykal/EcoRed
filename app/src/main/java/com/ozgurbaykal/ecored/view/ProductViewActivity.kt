@@ -145,16 +145,16 @@ class ProductViewActivity : BaseActivity() {
         if (description.length > maxDescriptionLength) {
             binding.productDesc.text = description.substring(0, maxDescriptionLength) + "..."
             binding.readMore.visibility = View.VISIBLE
-            binding.readMore.text = "Read More"
+            binding.readMore.text = getString(R.string.read_more)
             var isExpanded = false
 
             binding.readMore.setOnClickListener {
                 if (isExpanded) {
                     binding.productDesc.text = description.substring(0, maxDescriptionLength) + "..."
-                    binding.readMore.text = "Read More"
+                    binding.readMore.text = getString(R.string.read_more)
                 } else {
                     binding.productDesc.text = description
-                    binding.readMore.text = "Read Less"
+                    binding.readMore.text = getString(R.string.read_more)
                 }
                 isExpanded = !isExpanded
             }

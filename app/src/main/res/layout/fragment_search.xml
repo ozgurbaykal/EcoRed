@@ -90,7 +90,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="History"
+                android:text="@string/history"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -100,7 +100,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Clear All"
+                android:text="@string/clear_all"
                 android:textColor="@color/gray"
                 android:textAlignment="textEnd"
                 android:textSize="14sp"/>

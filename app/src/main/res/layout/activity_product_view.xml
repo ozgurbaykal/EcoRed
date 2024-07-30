@@ -187,7 +187,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="10dp"
-                        android:text="Product Description"
+                        android:text="@string/product_description"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -228,7 +228,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
-                android:text="Similar Products"
+                android:text="@string/similar_products"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -331,7 +331,7 @@
             android:layout_weight="3"
             android:background="@drawable/button_without_border_with_color_8_radius"
             android:backgroundTint="@color/main_red"
-            android:text="Add to cart"
+            android:text="@string/add_to_cart"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp" />
