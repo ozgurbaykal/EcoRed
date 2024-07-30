@@ -12,7 +12,9 @@ data class User(
     val address: String = "",
     val phoneNumber: String = "",
     val searchHistory: List<SearchHistoryItem> = emptyList(),
+    val favorites: List<String> = emptyList()
 )
+
 
 data class SearchHistoryItem(
     val query: String = "",

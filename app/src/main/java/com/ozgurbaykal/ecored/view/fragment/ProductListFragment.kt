@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.ozgurbaykal.ecored.R
 import com.ozgurbaykal.ecored.databinding.FragmentProductListBinding
 import com.ozgurbaykal.ecored.view.BaseFragment
@@ -44,7 +45,7 @@ class ProductListFragment : BaseFragment() {
         catalogId = arguments?.getString("catalogId")
         val catalogTitle = arguments?.getString("catalogTitle")
 
-        Log.i("ProductListFragment", "catalogId: ${catalogId}")
+        Log.i("ProductListFragment", "catalogId: $catalogId")
 
         if (caller == "viewAllButton") {
             binding.searchEditText.visibility = View.GONE
@@ -52,6 +53,14 @@ class ProductListFragment : BaseFragment() {
             binding.titleTopLayout.visibility = View.VISIBLE
             binding.titleTopLayout.text = getString(R.string.daily_deal_title)
             commonViewModel.fetchRandomDiscountedProducts(2)
+        } else if (caller == "favoritesButton") {
+            FirebaseAuth.getInstance().currentUser?.let { user ->
+                commonViewModel.fetchFavoriteProducts(user.uid)
+            }
+            binding.searchEditText.visibility = View.GONE
+            binding.title.visibility = View.GONE
+            binding.titleTopLayout.visibility = View.VISIBLE
+            binding.titleTopLayout.text = "My Favorites"
         } else {
             if (catalogTitle != null)
                 binding.title.text = catalogTitle.toString()
@@ -93,6 +102,16 @@ class ProductListFragment : BaseFragment() {
         return view
     }
 
+    override fun onResume() {
+        super.onResume()
+        val caller = arguments?.getString("caller")
+        if (caller == "favoritesButton") {
+            FirebaseAuth.getInstance().currentUser?.let { user ->
+                commonViewModel.fetchFavoriteProducts(user.uid)
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -109,6 +128,11 @@ class ProductListFragment : BaseFragment() {
 
     private fun setupObservers() {
         commonViewModel.generalProducts.observe(viewLifecycleOwner) { products ->
+            productAdapter.submitList(products)
+            productAdapter.notifyDataSetChanged()
+        }
+
+        commonViewModel.favoriteProducts.observe(viewLifecycleOwner) { products ->
             productAdapter.submitList(products)
             productAdapter.notifyDataSetChanged()
         }

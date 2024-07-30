@@ -64,7 +64,6 @@ class HomeFragment : BaseFragment() {
         }
 
         commonViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            Log.i("HomeFragment", "isLoading: $isLoading")
             manageProgressBar(isLoading)
            // binding.recyclerViewHiglights.visibility = if (isLoading) View.VISIBLE else View.GONE
         }

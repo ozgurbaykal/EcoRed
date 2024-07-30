@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import com.ozgurbaykal.ecored.R
 import com.ozgurbaykal.ecored.databinding.ActivityLoginBinding
 import com.ozgurbaykal.ecored.databinding.ActivityMainBinding
@@ -34,7 +35,9 @@ class ProductViewActivity : BaseActivity() {
 
     private val maxDescriptionLength = 100
 
-    var  test: Boolean = false
+
+    private lateinit var product: Product
+    private var isFavorite: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,11 +45,20 @@ class ProductViewActivity : BaseActivity() {
         binding = ActivityProductViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val product = intent.getParcelableExtra<Product>("product")
+        product = intent.getParcelableExtra<Product>("product")!!
 
         product?.let {
             setProductDetails(it)
             getSimilarProducts(it)
+        }
+
+        commonViewModel.favorites.observe(this) { favorites ->
+            isFavorite = favorites.contains(product.id)
+            updateFavoriteIcon()
+        }
+
+        FirebaseAuth.getInstance().currentUser?.let { user ->
+            commonViewModel.fetchFavorites(user.uid)
         }
 
         binding.backButton.setOnClickListener {
@@ -54,14 +66,19 @@ class ProductViewActivity : BaseActivity() {
         }
 
         binding.favoriteButton.setOnClickListener {
-            setFavorite()
+            FirebaseAuth.getInstance().currentUser?.let { user ->
+                if (isFavorite) {
+                    commonViewModel.removeFavorite(user.uid, product.id)
+                } else {
+                    commonViewModel.addFavorite(user.uid, product.id)
+                }
+            }
         }
 
         val layoutManagerHiglight = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.recyclerViewSimilarProducts.layoutManager = layoutManagerHiglight
 
         commonViewModel.generalProducts.observe(this) { products ->
-            Log.i("ProductViewActivity", "products: ${products.toString()}")
             binding.recyclerViewSimilarProducts.adapter = ProductAdapter(products)
         }
 
@@ -71,13 +88,12 @@ class ProductViewActivity : BaseActivity() {
 
     }
 
-    private fun setFavorite(){
-        if(!test)
+    private fun updateFavoriteIcon() {
+        if (isFavorite) {
             binding.favoriteIcon.setImageResource(R.drawable.heaart_filled)
-        else
+        } else {
             binding.favoriteIcon.setImageResource(R.drawable.heart_lined)
-
-        test = !test
+        }
     }
 
     private fun getSimilarProducts(product: Product){

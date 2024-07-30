@@ -12,6 +12,7 @@ import com.ozgurbaykal.ecored.databinding.ActivityLoginBinding
 import com.ozgurbaykal.ecored.databinding.ActivityMainBinding
 import com.ozgurbaykal.ecored.util.SharedPreferencesHelper
 import com.ozgurbaykal.ecored.view.fragment.HomeFragment
+import com.ozgurbaykal.ecored.view.fragment.ProductListFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -45,6 +46,10 @@ class MainActivity : BaseActivity() {
                     true
                 }
                 R.id.navigation_favorites -> {
+                    val bundle = Bundle().apply {
+                        putString("caller", "favoritesButton")
+                    }
+                    changeFragmentWithBundle(ProductListFragment(), R.id.mainActivityFragmentView, "ProductListFragmentTAG", bundle)
 
                     true
                 }

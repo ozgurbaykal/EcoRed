@@ -50,6 +50,14 @@ class CommonViewModel @Inject constructor(
 
     private val _searchResults = MutableLiveData<List<Product>>()
     val searchResults: LiveData<List<Product>> get() = _searchResults
+
+    private val _favorites = MutableLiveData<List<String>>()
+    val favorites: LiveData<List<String>> get() = _favorites
+
+    private val _favoriteProducts = MutableLiveData<List<Product>>()
+    val favoriteProducts: LiveData<List<Product>> get() = _favoriteProducts
+
+
     fun fetchCatalogs() {
         _isLoading.value = true
         viewModelScope.launch {
@@ -115,7 +123,8 @@ class CommonViewModel @Inject constructor(
         _isLoading.value = true
         viewModelScope.launch {
             try {
-                val products = commonRepository.getProductsWithCategoryId(categoryId, currentProductId)
+                val products =
+                    commonRepository.getProductsWithCategoryId(categoryId, currentProductId)
                 _generalProducts.value = products
                 _isLoading.value = false
                 _errorMessage.value = null
@@ -129,7 +138,11 @@ class CommonViewModel @Inject constructor(
     fun loadProducts(limit: Long, categoryId: String? = null) {
         viewModelScope.launch {
             _isLoading.value = true
-            val (newProducts, newLastVisibleDocument) = commonRepository.getProducts(limit, lastVisibleDocument, categoryId)
+            val (newProducts, newLastVisibleDocument) = commonRepository.getProducts(
+                limit,
+                lastVisibleDocument,
+                categoryId
+            )
             Log.i("CommonViewModel", "newProducts -> ${newProducts.toString()}")
             if (newProducts.isNotEmpty()) {
                 lastVisibleDocument = newLastVisibleDocument
@@ -203,4 +216,39 @@ class CommonViewModel @Inject constructor(
         }
     }
 
+    fun addFavorite(userId: String, productId: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            commonRepository.addFavorite(userId, productId)
+            fetchFavorites(userId)
+            _isLoading.value = false
+        }
+    }
+
+    fun removeFavorite(userId: String, productId: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            commonRepository.removeFavorite(userId, productId)
+            fetchFavorites(userId)
+            _isLoading.value = false
+        }
+    }
+
+    fun fetchFavorites(userId: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            val favorites = commonRepository.getFavorites(userId)
+            _favorites.value = favorites
+            _isLoading.value = false
+        }
+    }
+
+    fun fetchFavoriteProducts(userId: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            val favorites = commonRepository.getFavoriteProducts(userId)
+            _favoriteProducts.value = favorites
+            _isLoading.value = false
+        }
+    }
 }

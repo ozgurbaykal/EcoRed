@@ -40,4 +40,13 @@ abstract class BaseActivity : AppCompatActivity() {
             commit()
         }
     }
+
+    fun changeFragmentWithBundle(fragment: Fragment, frameId: Int, tag: String, bundle: Bundle? = null) {
+        fragment.arguments = bundle
+        supportFragmentManager?.beginTransaction()?.apply {
+            replace(frameId, fragment, tag)
+            addToBackStack(tag)
+            commit()
+        }
+    }
 }

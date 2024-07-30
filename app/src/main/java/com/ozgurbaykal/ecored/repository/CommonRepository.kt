@@ -3,6 +3,7 @@ package com.ozgurbaykal.ecored.repository
 
 import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -200,6 +201,71 @@ class CommonRepository @Inject constructor(
             snapshot.toObject(Product::class.java)
         } catch (e: Exception) {
             null
+        }
+    }
+
+    suspend fun addFavorite(userId: String, productId: String) {
+        try {
+            val userRef = db.collection("users").document(userId)
+            db.runTransaction { transaction ->
+                val snapshot = transaction.get(userRef)
+                val favorites = snapshot.get("favorites") as? MutableList<String> ?: mutableListOf()
+
+                if (!favorites.contains(productId)) {
+                    favorites.add(productId)
+                    transaction.update(userRef, "favorites", favorites)
+                }
+            }.await()
+        } catch (e: Exception) {
+        }
+    }
+
+    suspend fun removeFavorite(userId: String, productId: String) {
+        try {
+            val userRef = db.collection("users").document(userId)
+            db.runTransaction { transaction ->
+                val snapshot = transaction.get(userRef)
+                val favorites = snapshot.get("favorites") as? MutableList<String> ?: mutableListOf()
+
+                if (favorites.contains(productId)) {
+                    favorites.remove(productId)
+                    transaction.update(userRef, "favorites", favorites)
+                }
+            }.await()
+        } catch (e: Exception) {
+        }
+    }
+
+    suspend fun getFavorites(userId: String): List<String> {
+        return try {
+            val snapshot = db.collection("users")
+                .document(userId)
+                .get()
+                .await()
+            val user = snapshot.toObject(User::class.java)
+            user?.favorites ?: emptyList()
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    suspend fun getFavoriteProducts(userId: String): List<Product> {
+        return try {
+            val userSnapshot = db.collection("users").document(userId).get().await()
+            val user = userSnapshot.toObject(User::class.java)
+            val favoriteProductIds = user?.favorites ?: emptyList()
+
+            if (favoriteProductIds.isNotEmpty()) {
+                val productsSnapshot = db.collection("products")
+                    .whereIn(FieldPath.documentId(), favoriteProductIds)
+                    .get()
+                    .await()
+                productsSnapshot.toObjects(Product::class.java)
+            } else {
+                emptyList()
+            }
+        } catch (e: Exception) {
+            emptyList()
         }
     }
 
