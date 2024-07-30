@@ -1,6 +1,8 @@
 package com.ozgurbaykal.ecored.view.fragment
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +31,8 @@ class ProductListFragment : BaseFragment() {
     private var isLoading = false
     private val limit: Long = 10
 
+    private var catalogId: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,11 +41,10 @@ class ProductListFragment : BaseFragment() {
         val view = binding.root
 
         val caller = arguments?.getString("caller")
-        val catalogId = arguments?.getString("catalogId")
+        catalogId = arguments?.getString("catalogId")
         val catalogTitle = arguments?.getString("catalogTitle")
 
-        Log.i("ProductListFragment", "catalogId: ${arguments?.getString("catalogId")}")
-
+        Log.i("ProductListFragment", "catalogId: ${catalogId}")
 
         if (caller == "viewAllButton") {
             binding.searchEditText.visibility = View.GONE
@@ -50,7 +53,7 @@ class ProductListFragment : BaseFragment() {
             binding.titleTopLayout.text = getString(R.string.daily_deal_title)
             commonViewModel.fetchRandomDiscountedProducts(2)
         } else {
-            if(catalogTitle!=null)
+            if (catalogTitle != null)
                 binding.title.text = catalogTitle.toString()
 
             commonViewModel.loadProducts(limit, catalogId)
@@ -65,12 +68,23 @@ class ProductListFragment : BaseFragment() {
             })
         }
 
-
         setupRecyclerView()
         setupObservers()
 
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                s?.toString()?.let {
+                    if (it.isNotEmpty()) {
+                        commonViewModel.searchProducts(it, catalogId)
+                    } else {
+                        commonViewModel.loadProducts(limit, catalogId)
+                    }
+                }
+            }
 
-
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
 
         binding.backButton.setOnClickListener {
             activity?.onBackPressedDispatcher?.onBackPressed()

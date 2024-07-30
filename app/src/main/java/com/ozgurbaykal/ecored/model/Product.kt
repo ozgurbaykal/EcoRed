@@ -18,5 +18,6 @@ data class Product(
     val images: List<String> = emptyList(),
     val price: Double = 0.0,
     val title: String = "",
+    val titleLowerCase: String = "",
 
 ) : Parcelable

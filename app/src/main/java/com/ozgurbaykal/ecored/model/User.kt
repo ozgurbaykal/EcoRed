@@ -10,5 +10,11 @@ data class User(
     val lastName: String = "",
     val createdAt: Timestamp = Timestamp.now(),
     val address: String = "",
-    val phoneNumber: String = ""
+    val phoneNumber: String = "",
+    val searchHistory: List<SearchHistoryItem> = emptyList(),
+)
+
+data class SearchHistoryItem(
+    val query: String = "",
+    val productId: String = ""
 )

@@ -3,13 +3,17 @@ package com.ozgurbaykal.ecored.repository
 
 import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.ozgurbaykal.ecored.model.Banner
 import com.ozgurbaykal.ecored.model.Catalog
 import com.ozgurbaykal.ecored.model.Product
+import com.ozgurbaykal.ecored.model.SearchHistoryItem
+import com.ozgurbaykal.ecored.model.User
 import kotlinx.coroutines.tasks.await
+import java.util.Locale
 import javax.inject.Inject
 
 class CommonRepository @Inject constructor(
@@ -114,7 +118,89 @@ class CommonRepository @Inject constructor(
             Pair(emptyList(), null)
         }
     }
+    suspend fun getSearchHistory(userId: String): List<SearchHistoryItem> {
+        return try {
+            val snapshot = db.collection("users")
+                .document(userId)
+                .get()
+                .await()
+            val user = snapshot.toObject(User::class.java)
+            user?.searchHistory?.takeLast(10)?.reversed() ?: emptyList()
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
 
+    suspend fun removeSearchHistoryItem(userId: String, query: String) {
+        try {
+            val userRef = db.collection("users").document(userId)
+            db.runTransaction { transaction ->
+                val snapshot = transaction.get(userRef)
+                val searchHistory = snapshot.toObject(User::class.java)?.searchHistory?.toMutableList() ?: mutableListOf()
+                searchHistory.removeAll { it.query == query }
+                transaction.update(userRef, "searchHistory", searchHistory)
+            }.await()
+        } catch (e: Exception) {
+        }
+    }
 
+    suspend fun clearSearchHistory(userId: String) {
+        try {
+            val userRef = db.collection("users").document(userId)
+            userRef.update("searchHistory", emptyList<SearchHistoryItem>()).await()
+        } catch (e: Exception) {
+        }
+    }
+
+    suspend fun searchProducts(query: String, categoryId: String? = null): List<Product> {
+        return try {
+            val lowercaseQuery = query.lowercase(Locale.ROOT)
+            val snapshot = if (categoryId != null) {
+                db.collection("products")
+                    .whereEqualTo("categoryId", categoryId)
+                    .whereGreaterThanOrEqualTo("titleLowerCase", lowercaseQuery)
+                    .whereLessThanOrEqualTo("titleLowerCase", lowercaseQuery + '\uf8ff')
+                    .get()
+                    .await()
+            } else {
+                db.collection("products")
+                    .whereGreaterThanOrEqualTo("titleLowerCase", lowercaseQuery)
+                    .whereLessThanOrEqualTo("titleLowerCase", lowercaseQuery + '\uf8ff')
+                    .get()
+                    .await()
+            }
+            snapshot.toObjects(Product::class.java)
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    suspend fun addSearchToHistory(userId: String, query: String, productId: String) {
+        try {
+            val userRef = db.collection("users").document(userId)
+            db.runTransaction { transaction ->
+                val snapshot = transaction.get(userRef)
+                val searchHistory = snapshot.toObject(User::class.java)?.searchHistory?.toMutableList() ?: mutableListOf()
+
+                if (!searchHistory.any { it.query == query }) {
+                    if (searchHistory.size >= 10) { //MAX HISTORY ARRAY SIZE
+                        searchHistory.removeAt(0)
+                    }
+                    searchHistory.add(SearchHistoryItem(query, productId))
+                    transaction.update(userRef, "searchHistory", searchHistory)
+                }
+            }.await()
+        } catch (e: Exception) {
+        }
+    }
+
+    suspend fun getProductById(productId: String): Product? {
+        return try {
+            val snapshot = db.collection("products").document(productId).get().await()
+            snapshot.toObject(Product::class.java)
+        } catch (e: Exception) {
+            null
+        }
+    }
 
 }

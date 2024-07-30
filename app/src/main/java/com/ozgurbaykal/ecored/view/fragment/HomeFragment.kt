@@ -97,6 +97,12 @@ class HomeFragment : BaseFragment() {
             setupViewPager()
             startAutoScroll()
         }
+
+        binding.searchEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                changeFragment(SearchFragment(), R.id.mainActivityFragmentView, "SearchFragmentTAG")
+            }
+        }
         commonViewModel.fetchDiscountedProducts()
         commonViewModel.fetchCatalogs()
         commonViewModel.fetchBanners()

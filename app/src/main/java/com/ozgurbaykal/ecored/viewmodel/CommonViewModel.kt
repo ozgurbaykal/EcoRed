@@ -6,11 +6,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.ozgurbaykal.ecored.model.Banner
 import com.ozgurbaykal.ecored.model.Catalog
 import com.ozgurbaykal.ecored.model.Product
+import com.ozgurbaykal.ecored.model.SearchHistoryItem
 import com.ozgurbaykal.ecored.repository.CommonRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -43,6 +45,11 @@ class CommonViewModel @Inject constructor(
     private val loadedProducts = mutableListOf<Product>()
     var lastVisibleDocument: DocumentSnapshot? = null
 
+    private val _searchHistory = MutableLiveData<List<SearchHistoryItem>>()
+    val searchHistory: LiveData<List<SearchHistoryItem>> get() = _searchHistory
+
+    private val _searchResults = MutableLiveData<List<Product>>()
+    val searchResults: LiveData<List<Product>> get() = _searchResults
     fun fetchCatalogs() {
         _isLoading.value = true
         viewModelScope.launch {
@@ -133,4 +140,53 @@ class CommonViewModel @Inject constructor(
         }
     }
 
+
+    fun fetchSearchHistory(userId: String) {
+        viewModelScope.launch {
+            val history = commonRepository.getSearchHistory(userId)
+            _searchHistory.value = history
+        }
+    }
+
+    fun removeSearchHistoryItem(query: String, userId: String) {
+        viewModelScope.launch {
+            commonRepository.removeSearchHistoryItem(userId, query)
+            fetchSearchHistory(userId)
+        }
+    }
+
+    fun clearSearchHistory(userId: String) {
+        viewModelScope.launch {
+            commonRepository.clearSearchHistory(userId)
+            fetchSearchHistory(userId)
+        }
+    }
+
+    fun addSearchHistory(query: String, productId: String, userId: String) {
+        viewModelScope.launch {
+            commonRepository.addSearchToHistory(userId, query, productId)
+        }
+    }
+
+    fun searchProducts(query: String) {
+        viewModelScope.launch {
+            val results = commonRepository.searchProducts(query)
+            _searchResults.value = results
+        }
+    }
+
+    fun searchProducts(query: String, categoryId: String? = null) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            val results = commonRepository.searchProducts(query, categoryId)
+            _generalProducts.value = results
+            _isLoading.value = false
+        }
+    }
+    fun getProductById(productId: String, callback: (Product?) -> Unit) {
+        viewModelScope.launch {
+            val product = commonRepository.getProductById(productId)
+            callback(product)
+        }
+    }
 }
