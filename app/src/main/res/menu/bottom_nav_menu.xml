@@ -14,7 +14,7 @@
     <item
         android:id="@+id/navigation_cart"
         android:icon="@drawable/cart_lined"
-        android:title="@string/my_cart" />
+        android:title="@string/cart" />
 
     <item
         android:id="@+id/navigation_account"

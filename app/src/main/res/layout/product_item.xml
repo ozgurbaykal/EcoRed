@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/eco_red_512_black"
+            android:src="@drawable/loading_ecored"
             android:layout_gravity="center"
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"

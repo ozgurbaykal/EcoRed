@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.ozgurbaykal.ecored.model.Banner
+import com.ozgurbaykal.ecored.model.CartItem
 import com.ozgurbaykal.ecored.model.Catalog
 import com.ozgurbaykal.ecored.model.Product
 import com.ozgurbaykal.ecored.model.SearchHistoryItem
@@ -57,6 +58,8 @@ class CommonViewModel @Inject constructor(
     private val _favoriteProducts = MutableLiveData<List<Product>>()
     val favoriteProducts: LiveData<List<Product>> get() = _favoriteProducts
 
+    private val _cartItems = MutableLiveData<List<CartItem>>()
+    val cartItems: LiveData<List<CartItem>> get() = _cartItems
 
     fun fetchCatalogs() {
         _isLoading.value = true
@@ -249,6 +252,49 @@ class CommonViewModel @Inject constructor(
             val favorites = commonRepository.getFavoriteProducts(userId)
             _favoriteProducts.value = favorites
             _isLoading.value = false
+        }
+    }
+
+    fun fetchCart(userId: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            val cart = commonRepository.getCart(userId)
+            _cartItems.value = cart
+            _isLoading.value = false
+        }
+    }
+
+    fun addToCart(userId: String, productId: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            commonRepository.addToCart(userId, productId)
+            fetchCart(userId)
+            _isLoading.value = false
+        }
+    }
+
+    fun removeFromCart(userId: String, productId: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            commonRepository.removeFromCart(userId, productId)
+            fetchCart(userId)
+            _isLoading.value = false
+        }
+    }
+
+    fun clearCart(userId: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            commonRepository.clearCart(userId)
+            fetchCart(userId)
+            _isLoading.value = false
+        }
+    }
+
+    fun fetchProductsByIds(productIds: List<String>, callback: (List<Product>) -> Unit) {
+        viewModelScope.launch {
+            val products = commonRepository.getProductsByIds(productIds)
+            callback(products)
         }
     }
 }

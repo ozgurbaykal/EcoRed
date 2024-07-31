@@ -65,6 +65,13 @@ class ProductViewActivity : BaseActivity() {
             finish()
         }
 
+
+        binding.addToCart.setOnClickListener {
+            FirebaseAuth.getInstance().currentUser?.let { user ->
+                commonViewModel.addToCart(user.uid, product.id)
+            }
+        }
+
         binding.favoriteButton.setOnClickListener {
             FirebaseAuth.getInstance().currentUser?.let { user ->
                 if (isFavorite) {

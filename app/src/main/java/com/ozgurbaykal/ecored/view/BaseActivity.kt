@@ -34,7 +34,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
 
-    private fun changeFragment(fragment: Fragment, frameId: Int, tag: String) {
+    fun changeFragment(fragment: Fragment, frameId: Int, tag: String) {
         supportFragmentManager.beginTransaction().apply {
             replace(frameId, fragment, tag)
             commit()
@@ -45,7 +45,6 @@ abstract class BaseActivity : AppCompatActivity() {
         fragment.arguments = bundle
         supportFragmentManager.beginTransaction()
             .replace(frameId, fragment, tag)
-            .addToBackStack(tag)
             .commit()
     }
 }

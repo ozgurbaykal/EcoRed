@@ -18,7 +18,8 @@
             android:id="@+id/catalogImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/loading_ecored"/>
     </androidx.cardview.widget.CardView>
 
 

@@ -9,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.ozgurbaykal.ecored.model.Banner
+import com.ozgurbaykal.ecored.model.CartItem
 import com.ozgurbaykal.ecored.model.Catalog
 import com.ozgurbaykal.ecored.model.Product
 import com.ozgurbaykal.ecored.model.SearchHistoryItem
@@ -264,6 +265,85 @@ class CommonRepository @Inject constructor(
             } else {
                 emptyList()
             }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    suspend fun getCart(userId: String): List<CartItem> {
+        return try {
+            val snapshot = db.collection("users")
+                .document(userId)
+                .get()
+                .await()
+            val user = snapshot.toObject(User::class.java)
+            user?.cart ?: emptyList()
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    suspend fun addToCart(userId: String, productId: String) {
+        try {
+            val userRef = db.collection("users").document(userId)
+            db.runTransaction { transaction ->
+                val snapshot = transaction.get(userRef)
+                val cart = snapshot.toObject(User::class.java)?.cart?.toMutableList() ?: mutableListOf()
+
+                val existingItem = cart.find { it.productId == productId }
+                if (existingItem != null) {
+                    val updatedItem = existingItem.copy(quantity = existingItem.quantity + 1)
+                    cart[cart.indexOf(existingItem)] = updatedItem
+                } else {
+                    cart.add(CartItem(productId, 1))
+                }
+                transaction.update(userRef, "cart", cart)
+            }.await()
+        } catch (e: Exception) {
+            Log.e("CommonRepository", "addToCart -> Error: ${e.message}", e)
+        }
+    }
+
+
+    suspend fun removeFromCart(userId: String, productId: String) {
+        try {
+            val userRef = db.collection("users").document(userId)
+            db.runTransaction { transaction ->
+                val snapshot = transaction.get(userRef)
+                val cart = snapshot.toObject(User::class.java)?.cart?.toMutableList() ?: mutableListOf()
+
+                val existingItem = cart.find { it.productId == productId }
+                if (existingItem != null) {
+                    if (existingItem.quantity > 1) {
+                        val updatedItem = existingItem.copy(quantity = existingItem.quantity - 1)
+                        cart[cart.indexOf(existingItem)] = updatedItem
+                    } else {
+                        cart.remove(existingItem)
+                    }
+                }
+                transaction.update(userRef, "cart", cart)
+            }.await()
+        } catch (e: Exception) {
+            Log.e("CommonRepository", "removeFromCart -> Error: ${e.message}", e)
+        }
+    }
+
+
+    suspend fun clearCart(userId: String) {
+        try {
+            val userRef = db.collection("users").document(userId)
+            userRef.update("cart", emptyList<CartItem>()).await()
+        } catch (e: Exception) {
+        }
+    }
+
+    suspend fun getProductsByIds(productIds: List<String>): List<Product> {
+        return try {
+            val snapshots = db.collection("products")
+                .whereIn(FieldPath.documentId(), productIds)
+                .get()
+                .await()
+            snapshots.toObjects(Product::class.java)
         } catch (e: Exception) {
             emptyList()
         }

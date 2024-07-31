@@ -48,7 +48,7 @@
 
     <string name="home_page">Home</string>
     <string name="my_favorites">Favorites</string>
-    <string name="my_cart">Cart</string>
+    <string name="cart">Cart</string>
     <string name="my_account">My Account</string>
 
 
@@ -64,6 +64,9 @@
     <string name="clear_all">Clear All</string>
     <string name="similar_products">Similar Products</string>
     <string name="read_more">Read More</string>
+    <string name="my_cart">My Cart</string>
+    <string name="complete_shopping">Complete Shopping</string>
+    <string name="empty_cart">You didn\'t add any product. Shop now.</string>
 
 
 </resources>
