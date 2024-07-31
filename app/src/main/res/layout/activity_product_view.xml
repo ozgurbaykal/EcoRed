@@ -322,6 +322,69 @@
         </LinearLayout>
 
 
+        <LinearLayout
+            android:id="@+id/addAndRemoveLayout"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:orientation="horizontal"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:layout_marginStart="8dp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/removeButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_weight="2"
+                android:background="@drawable/button_without_border_with_color_8_radius"
+                android:backgroundTint="@color/main_red"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/remove"
+                    app:tint="@color/white" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/productAmount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="0"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:id="@+id/addButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_weight="2"
+                android:background="@drawable/button_without_border_with_color_8_radius"
+                android:backgroundTint="@color/main_red"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/add"
+                    app:tint="@color/white" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/addToCart"
             android:layout_width="0dp"
@@ -334,7 +397,7 @@
             android:text="@string/add_to_cart"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
     </LinearLayout>
 

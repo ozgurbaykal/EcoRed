@@ -30,12 +30,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class ProductViewActivity : BaseActivity() {
 
     private lateinit var binding: ActivityProductViewBinding
-
     private val commonViewModel: CommonViewModel by viewModels()
 
     private val maxDescriptionLength = 100
-
-
     private lateinit var product: Product
     private var isFavorite: Boolean = false
 
@@ -59,16 +56,47 @@ class ProductViewActivity : BaseActivity() {
 
         FirebaseAuth.getInstance().currentUser?.let { user ->
             commonViewModel.fetchFavorites(user.uid)
+            commonViewModel.fetchCart(user.uid)
         }
 
+        setupListeners()
+
+        commonViewModel.cartItems.observe(this) { cartItems ->
+            val cartItem = cartItems.find { it.productId == product.id }
+            if (cartItem != null) {
+                showAddAndRemoveLayout(cartItem.quantity)
+            } else {
+                showAddToCartButton()
+            }
+        }
+
+        commonViewModel.isLoading.observe(this) { isLoading ->
+            Log.i("ProductViewActivity", "isLoading -> $isLoading")
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun setupListeners() {
         binding.backButton.setOnClickListener {
             finish()
         }
 
-
         binding.addToCart.setOnClickListener {
             FirebaseAuth.getInstance().currentUser?.let { user ->
                 commonViewModel.addToCart(user.uid, product.id)
+                showAddAndRemoveLayout(1)
+            }
+        }
+
+        binding.addButton.setOnClickListener {
+            FirebaseAuth.getInstance().currentUser?.let { user ->
+                commonViewModel.addToCart(user.uid, product.id)
+            }
+        }
+
+        binding.removeButton.setOnClickListener {
+            FirebaseAuth.getInstance().currentUser?.let { user ->
+                commonViewModel.removeFromCart(user.uid, product.id)
             }
         }
 
@@ -81,18 +109,17 @@ class ProductViewActivity : BaseActivity() {
                 }
             }
         }
+    }
 
-        val layoutManagerHiglight = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerViewSimilarProducts.layoutManager = layoutManagerHiglight
+    private fun showAddToCartButton() {
+        binding.addToCart.visibility = View.VISIBLE
+        binding.addAndRemoveLayout.visibility = View.GONE
+    }
 
-        commonViewModel.generalProducts.observe(this) { products ->
-            binding.recyclerViewSimilarProducts.adapter = ProductAdapter(products)
-        }
-
-        commonViewModel.isLoading.observe(this) { isLoading ->
-            manageProgressBar(isLoading)
-        }
-
+    private fun showAddAndRemoveLayout(quantity: Int) {
+        binding.addToCart.visibility = View.GONE
+        binding.addAndRemoveLayout.visibility = View.VISIBLE
+        binding.productAmount.text = quantity.toString()
     }
 
     private fun updateFavoriteIcon() {
@@ -103,9 +130,8 @@ class ProductViewActivity : BaseActivity() {
         }
     }
 
-    private fun getSimilarProducts(product: Product){
+    private fun getSimilarProducts(product: Product) {
         val categoryId = product.categoryId
-
         commonViewModel.getProductsWithCategory(categoryId, product.id)
     }
 
@@ -139,13 +165,11 @@ class ProductViewActivity : BaseActivity() {
 
         setupDescription(product.description)
 
-
         val galleryAdapter = GalleryImageAdapter(product.images) { position ->
             binding.productImagesViewPager.currentItem = position
         }
         binding.viewPageGallery.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.viewPageGallery.adapter = galleryAdapter
-
     }
 
     private fun setupDescription(description: String) {
