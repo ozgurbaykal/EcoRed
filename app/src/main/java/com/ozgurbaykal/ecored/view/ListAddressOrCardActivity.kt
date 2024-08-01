@@ -1,5 +1,7 @@
 package com.ozgurbaykal.ecored.view
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -7,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.ozgurbaykal.ecored.databinding.ActivityListAddressOrCardBinding
+import com.ozgurbaykal.ecored.model.User
 import com.ozgurbaykal.ecored.view.adapter.AddressOrCardAdapter
 import com.ozgurbaykal.ecored.view.adapter.AddressOrCardItem
 import com.ozgurbaykal.ecored.view.customs.AddAddressDialog
@@ -33,13 +36,7 @@ class ListAddressOrCardActivity : BaseActivity() {
 
         userViewModel.currentUser.observe(this) { user ->
             user?.let {
-                if (type == "addresses") {
-                    adapter.setItems(it.addresses.map { address -> AddressOrCardItem.AddressItem(addressTitle = address.addressTitle, detail = address.address, address = address) })
-                    binding.title.text = "Addresses"
-                } else {
-                    adapter.setItems(it.creditCards.map { card -> AddressOrCardItem.CardItem(cardTitle = card.cardTitle, detail = "**** **** **** ${card.cardNumber.takeLast(4)}", card = card) })
-                    binding.title.text = "Credit Cards"
-                }
+                updateUIWithUserDetails(it)
             }
         }
 
@@ -74,9 +71,19 @@ class ListAddressOrCardActivity : BaseActivity() {
     }
 
     private fun setupRecyclerView(type: String) {
-        adapter = AddressOrCardAdapter(type, this::onItemEdit, this::onItemDelete)
+        adapter = AddressOrCardAdapter(type, this::onItemEdit, this::onItemDelete, this::onItemClick)
         binding.itemRecycler.layoutManager = LinearLayoutManager(this)
         binding.itemRecycler.adapter = adapter
+    }
+
+    private fun updateUIWithUserDetails(user: User) {
+        if (type == "addresses") {
+            adapter.setItems(user.addresses.map { address -> AddressOrCardItem.AddressItem(addressTitle = address.addressTitle, detail = address.address, address = address) })
+            binding.title.text = "Addresses"
+        } else {
+            adapter.setItems(user.creditCards.map { card -> AddressOrCardItem.CardItem(cardTitle = card.cardTitle, detail = "**** **** **** ${card.cardNumber.takeLast(4)}", card = card) })
+            binding.title.text = "Credit Cards"
+        }
     }
 
     private fun onItemEdit(item: AddressOrCardItem) {
@@ -101,5 +108,19 @@ class ListAddressOrCardActivity : BaseActivity() {
                 userViewModel.deleteCreditCard(item.card)
             }
         }
+    }
+
+    private fun onItemClick(item: AddressOrCardItem) {
+        val resultIntent = Intent()
+        when (item) {
+            is AddressOrCardItem.AddressItem -> {
+                resultIntent.putExtra("selected_address", item.address)
+            }
+            is AddressOrCardItem.CardItem -> {
+                resultIntent.putExtra("selected_card", item.card)
+            }
+        }
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish()
     }
 }

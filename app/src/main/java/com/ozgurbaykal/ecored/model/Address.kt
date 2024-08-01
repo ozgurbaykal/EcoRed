@@ -1,5 +1,9 @@
 package com.ozgurbaykal.ecored.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Address(
     val name: String = "",
     val lastName: String = "",
@@ -8,4 +12,4 @@ data class Address(
     val city: String = "",
     val state: String = "",
     val addressTitle: String = ""
-)
+) : Parcelable

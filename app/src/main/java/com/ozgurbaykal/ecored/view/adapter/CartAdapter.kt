@@ -39,7 +39,6 @@ class CartAdapter(
             onDecreaseClick(item.productId)
         }
 
-        // Fetch product details
         fetchProductDetails(item.productId) { product ->
             product?.let {
                 with(holder.binding) {

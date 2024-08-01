@@ -69,33 +69,5 @@ class UserRepository @Inject constructor(
         }.await()
     }
 
-    suspend fun updateAddress(userId: String, oldAddressTitle: String, newAddress: Address) {
-        val userRef = db.collection("users").document(userId)
-        db.runTransaction { transaction ->
-            val snapshot = transaction.get(userRef)
-            val user = snapshot.toObject(User::class.java)
-            val updatedAddresses = user?.addresses?.toMutableList() ?: mutableListOf()
-            val index = updatedAddresses.indexOfFirst { it.addressTitle == oldAddressTitle }
-            if (index != -1) {
-                updatedAddresses[index] = newAddress
-                transaction.update(userRef, "addresses", updatedAddresses)
-            }
-        }.await()
-    }
-
-    suspend fun updateCreditCard(userId: String, oldCardTitle: String, newCard: CreditCard) {
-        val userRef = db.collection("users").document(userId)
-        db.runTransaction { transaction ->
-            val snapshot = transaction.get(userRef)
-            val user = snapshot.toObject(User::class.java)
-            val updatedCreditCards = user?.creditCards?.toMutableList() ?: mutableListOf()
-            val index = updatedCreditCards.indexOfFirst { it.cardTitle == oldCardTitle }
-            if (index != -1) {
-                updatedCreditCards[index] = newCard
-                transaction.update(userRef, "creditCards", updatedCreditCards)
-            }
-        }.await()
-    }
-
 
 }

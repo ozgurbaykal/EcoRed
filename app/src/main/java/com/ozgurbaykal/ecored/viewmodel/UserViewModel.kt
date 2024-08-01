@@ -126,38 +126,4 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun updateAddress(oldAddressTitle: String, newAddress: Address) {
-        _isLoading.value = true
-        viewModelScope.launch {
-            try {
-                userRepository.updateAddress(auth.currentUser?.uid ?: return@launch, oldAddressTitle, newAddress)
-                fetchUser(auth.currentUser?.uid ?: return@launch)
-                _isLoading.value = false
-                _isAddressAdded.value = true
-                _errorMessage.value = null
-            } catch (e: Exception) {
-                _isLoading.value = false
-                _isAddressAdded.value = false
-                _errorMessage.value = e.message
-            }
-        }
-    }
-
-    fun updateCreditCard(oldCardTitle: String, newCard: CreditCard) {
-        _isLoading.value = true
-        viewModelScope.launch {
-            try {
-                userRepository.updateCreditCard(auth.currentUser?.uid ?: return@launch, oldCardTitle, newCard)
-                fetchUser(auth.currentUser?.uid ?: return@launch)
-                _isLoading.value = false
-                _isCardAdded.value = true
-                _errorMessage.value = null
-            } catch (e: Exception) {
-                _isLoading.value = false
-                _isCardAdded.value = false
-                _errorMessage.value = e.message
-            }
-        }
-    }
-
 }
