@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="12dp">
+
+    <FrameLayout
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:elevation="80dp"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="heart_loading.json"
+            app:lottie_loop="true" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+
+        <LinearLayout
+            android:id="@+id/addNewCardLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add New Card"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Card Number"
+                android:textSize="13sp"
+                android:layout_marginTop="14dp"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/cardNumberInput"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/edittext_background"
+                android:padding="10dp"
+                android:hint="1234 5678 9876 5432"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:inputType="number"
+                android:maxLines="1"
+                android:maxLength="16"
+                android:layout_marginTop="4dp"/>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"
+                    android:text="Expiration Date"
+                    android:textSize="13sp" />
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/monthExpDateInput"
+                    android:layout_width="55dp"
+                    android:layout_height="45dp"
+                    android:layout_below="@+id/textView"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/edittext_background"
+                    android:hint="00"
+                    android:padding="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textAlignment="center"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:maxLength="2"/>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/yearExpDateInput"
+                    android:layout_width="75dp"
+                    android:layout_height="45dp"
+                    android:layout_below="@+id/textView"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_toEndOf="@+id/monthExpDateInput"
+                    android:background="@drawable/edittext_background"
+                    android:hint="0000"
+                    android:padding="10dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:maxLength="4"/>
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="0dp"
+                    android:text="CCV"
+                    android:textSize="13sp"
+                    android:layout_alignStart="@+id/ccvNumberInput"
+                    />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/ccvNumberInput"
+                    android:layout_width="75dp"
+                    android:layout_height="45dp"
+                    android:layout_below="@+id/textView2"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="0dp"
+                    android:background="@drawable/edittext_background"
+                    android:hint="000"
+                    android:padding="10dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:inputType="numberPassword"
+                    android:maxLines="1"
+                    android:maxLength="3"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Card Title"
+                android:textSize="13sp"
+                android:layout_marginTop="10dp"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/cardTitle"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/edittext_background"
+                android:padding="10dp"
+                android:hint="Title"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:inputType="text"
+                android:maxLines="1"
+                android:maxLength="50"
+                android:layout_marginTop="4dp"/>
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/addToCart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@drawable/button_without_border_with_color_8_radius"
+                android:backgroundTint="@color/main_red"
+                android:text="Save Card"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:layout_marginTop="12dp"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

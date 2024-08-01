@@ -1,5 +1,6 @@
 package com.ozgurbaykal.ecored.view.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,8 @@ import com.ozgurbaykal.ecored.databinding.FragmentWelcomeForLoginBinding
 import com.ozgurbaykal.ecored.model.CartItem
 import com.ozgurbaykal.ecored.model.Product
 import com.ozgurbaykal.ecored.view.BaseFragment
+import com.ozgurbaykal.ecored.view.CheckoutActivity
+import com.ozgurbaykal.ecored.view.MainActivity
 import com.ozgurbaykal.ecored.view.adapter.CartAdapter
 import com.ozgurbaykal.ecored.viewmodel.CommonViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,6 +42,10 @@ class CartFragment : BaseFragment() {
         setupListeners()
 
         FirebaseAuth.getInstance().currentUser?.let { commonViewModel.fetchCart(it.uid) }
+
+        binding.completeShopping.setOnClickListener {
+            startActivity(Intent(requireActivity(), CheckoutActivity::class.java))
+        }
 
         binding.pricesLayout.setOnClickListener {
             if (binding.totalDiscount.visibility == View.GONE) {

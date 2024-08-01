@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="12dp">
+
+    <FrameLayout
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:elevation="80dp"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="heart_loading.json"
+            app:lottie_loop="true" />
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+
+        <LinearLayout
+            android:id="@+id/addNewAddressLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add New Address"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Contact information"
+                android:textSize="13sp"
+                android:layout_marginTop="14dp"/>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="0dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/nameInput"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_background"
+                        android:hint="@string/name"
+                        android:inputType="text"
+                        android:maxLength="50"
+                        android:maxLines="1"
+                        android:padding="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/lastNameInput"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_background"
+                        android:hint="@string/last_name"
+                        android:inputType="text"
+                        android:maxLength="50"
+                        android:maxLines="1"
+                        android:padding="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/phoneInput"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/edittext_background"
+                android:padding="10dp"
+                android:hint="+(90) 5xx xxx xx xx"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:maxLength="20"
+                android:layout_weight="1"
+                android:layout_marginTop="8dp"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Address information"
+                android:textSize="13sp"
+                android:layout_marginTop="12dp"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="4dp"
+                >
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/cityInput"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:background="@drawable/edittext_background"
+                    android:padding="10dp"
+                    android:hint="City"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:maxLength="50"
+                    android:layout_weight="1"/>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/stateInput"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:background="@drawable/edittext_background"
+                    android:padding="10dp"
+                    android:hint="State"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:maxLength="50"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"/>
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/addressInput"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/edittext_background"
+                android:padding="10dp"
+                android:hint="Detailed Address"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:inputType="text"
+                android:maxLines="1"
+                android:maxLength="50"
+                android:layout_marginTop="8dp"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/addressSavedTitle"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/edittext_background"
+                android:padding="10dp"
+                android:hint="Address Title"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:inputType="text"
+                android:maxLines="1"
+                android:maxLength="50"
+                android:layout_marginTop="8dp"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/addToAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@drawable/button_without_border_with_color_8_radius"
+                android:backgroundTint="@color/main_red"
+                android:text="Save Address"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:layout_marginTop="12dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

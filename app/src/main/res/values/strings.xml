@@ -67,6 +67,8 @@
     <string name="my_cart">My Cart</string>
     <string name="complete_shopping">Complete Shopping</string>
     <string name="empty_cart">You didn\'t add any product. Shop now.</string>
+    <string name="checkout">Checkout</string>
+    <string name="complete_payment">Complete Payment</string>
 
 
 </resources>

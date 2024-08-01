@@ -10,8 +10,9 @@ data class User(
     val lastName: String = "",
     val createdAt: Timestamp = Timestamp.now(),
     val address: String = "",
-    val phoneNumber: String = "",
     val searchHistory: List<SearchHistoryItem> = emptyList(),
     val favorites: List<String> = emptyList(),
-    val cart: List<CartItem> = emptyList()
+    val cart: List<CartItem> = emptyList(),
+    val creditCards: List<CreditCard> = emptyList(),
+    val addresses: List<Address> = emptyList()
 )

@@ -70,6 +70,13 @@ class ProductViewActivity : BaseActivity() {
             }
         }
 
+        val layoutManagerHiglight = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.recyclerViewSimilarProducts.layoutManager = layoutManagerHiglight
+
+        commonViewModel.generalProducts.observe(this) { products ->
+            binding.recyclerViewSimilarProducts.adapter = ProductAdapter(products)
+        }
+
         commonViewModel.isLoading.observe(this) { isLoading ->
             Log.i("ProductViewActivity", "isLoading -> $isLoading")
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
