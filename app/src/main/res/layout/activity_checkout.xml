@@ -112,7 +112,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Address Information"
+                        android:text="@string/address_info"
                         android:textStyle="bold"
                         android:textSize="18sp" />
 
@@ -142,7 +142,7 @@
                                 android:id="@+id/addressTitleName"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Address Title"
+                                android:text="@string/address_title"
                                 android:textSize="14sp"
                                 android:textStyle="bold"/>
 
@@ -150,7 +150,7 @@
                                 android:id="@+id/addressDetail"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Address Detail"
+                                android:text="@string/detailed_address"
                                 android:textSize="12sp"
                                 android:ellipsize="end"
                                 android:maxLines="1"
@@ -166,7 +166,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="+ Add New Address"
+                        android:text="@string/add_new_address"
                         android:textAlignment="center"
                         android:textColor="@color/main_red"
                         android:textSize="14sp" />
@@ -192,7 +192,7 @@
                         android:textStyle="bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Card Information"
+                        android:text="@string/card_info"
                         android:textSize="18sp" />
 
 
@@ -222,7 +222,7 @@
                                 android:id="@+id/cardTitleName"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Card Title"
+                                android:text="@string/card_title"
                                 android:textSize="14sp"
                                 android:textStyle="bold"/>
 
@@ -230,7 +230,7 @@
                                 android:id="@+id/cardNumber"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Address Detail"
+                                android:text="@string/card_number"
                                 android:textSize="12sp"
                                 android:ellipsize="end"
                                 android:maxLines="1"
@@ -242,12 +242,12 @@
                     </LinearLayout>
 
 
-                    <TextView
+                        <TextView
                         android:id="@+id/addNewCardButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="+ Add New Credit Card"
+                        android:text="@string/add_new_card"
                         android:textAlignment="center"
                         android:textColor="@color/main_red"
                         android:textSize="14sp" />
@@ -255,6 +255,22 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/your_products"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_marginTop="8dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cartRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/cart_product_item"
+                android:clickable="false"/>
 
 
         </LinearLayout>

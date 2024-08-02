@@ -1,5 +1,6 @@
 package com.ozgurbaykal.ecored.view.adapter
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Paint
@@ -8,16 +9,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.ozgurbaykal.ecored.R
 import com.ozgurbaykal.ecored.databinding.CartProductItemBinding
 import com.ozgurbaykal.ecored.model.CartItem
 import com.ozgurbaykal.ecored.model.Product
 import com.ozgurbaykal.ecored.view.ProductViewActivity
 
 class CartAdapter(
+    private var context: Context,
     private var items: List<CartItem>,
     private val onIncreaseClick: (String) -> Unit,
     private val onDecreaseClick: (String) -> Unit,
-    private val fetchProductDetails: (String, (Product?) -> Unit) -> Unit
+    private val fetchProductDetails: (String, (Product?) -> Unit) -> Unit,
+    private val isCheckoutActivity: Boolean = false
 ) : RecyclerView.Adapter<CartAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: CartProductItemBinding) : RecyclerView.ViewHolder(binding.root)
@@ -31,12 +35,21 @@ class CartAdapter(
         val item = items[position]
         holder.binding.productAmount.text = item.quantity.toString()
 
-        holder.binding.addProduct.setOnClickListener {
-            onIncreaseClick(item.productId)
-        }
+        if (isCheckoutActivity) {
+            holder.binding.addProduct.visibility = View.GONE
+            holder.binding.removeProduct.visibility = View.GONE
+            holder.binding.productAmount.visibility = View.GONE
+            holder.binding.productAmountBottom.visibility = View.VISIBLE
+            holder.binding.productAmountBottom.text = context.getString(R.string.amount_with_count, item.quantity)
 
-        holder.binding.removeProduct.setOnClickListener {
-            onDecreaseClick(item.productId)
+        } else {
+            holder.binding.addProduct.setOnClickListener {
+                onIncreaseClick(item.productId)
+            }
+
+            holder.binding.removeProduct.setOnClickListener {
+                onDecreaseClick(item.productId)
+            }
         }
 
         fetchProductDetails(item.productId) { product ->
@@ -67,10 +80,12 @@ class CartAdapter(
                         productDesc.visibility = View.VISIBLE
                     }
 
-                    root.setOnClickListener {
-                        val intent = Intent(root.context, ProductViewActivity::class.java)
-                        intent.putExtra("product", product)
-                        root.context.startActivity(intent)
+                    if (!isCheckoutActivity) {
+                        root.setOnClickListener {
+                            val intent = Intent(root.context, ProductViewActivity::class.java)
+                            intent.putExtra("product", product)
+                            root.context.startActivity(intent)
+                        }
                     }
                 }
             }

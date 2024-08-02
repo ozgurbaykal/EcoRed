@@ -17,6 +17,7 @@ import com.ozgurbaykal.ecored.model.Product
 import com.ozgurbaykal.ecored.view.BaseFragment
 import com.ozgurbaykal.ecored.view.CheckoutActivity
 import com.ozgurbaykal.ecored.view.MainActivity
+import com.ozgurbaykal.ecored.view.ProductViewActivity
 import com.ozgurbaykal.ecored.view.adapter.CartAdapter
 import com.ozgurbaykal.ecored.viewmodel.CommonViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +30,10 @@ class CartFragment : BaseFragment() {
 
     private val commonViewModel: CommonViewModel by viewModels()
     private lateinit var cartAdapter: CartAdapter
+
+    var totalPrice = 0.0
+    var totalDiscountedPrice = 0.0
+    var totalDiscount = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +49,11 @@ class CartFragment : BaseFragment() {
         FirebaseAuth.getInstance().currentUser?.let { commonViewModel.fetchCart(it.uid) }
 
         binding.completeShopping.setOnClickListener {
-            startActivity(Intent(requireActivity(), CheckoutActivity::class.java))
+            val intent = Intent(requireContext(), CheckoutActivity::class.java)
+            intent.putExtra("totalPrice", totalPrice)
+            intent.putExtra("totalDiscountedPrice", totalDiscountedPrice)
+            intent.putExtra("totalDiscount", totalDiscount)
+            startActivity(intent)
         }
 
         binding.pricesLayout.setOnClickListener {
@@ -68,7 +77,7 @@ class CartFragment : BaseFragment() {
     }
 
     private fun setupRecyclerView() {
-        cartAdapter = CartAdapter(emptyList(), this::onIncreaseClick, this::onDecreaseClick, this::fetchProductDetails)
+        cartAdapter = CartAdapter(requireContext(), emptyList(), this::onIncreaseClick, this::onDecreaseClick, this::fetchProductDetails)
         binding.cartRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.cartRecyclerView.adapter = cartAdapter
     }
@@ -112,9 +121,9 @@ class CartFragment : BaseFragment() {
     }
 
     private fun calculatePrices(cartItems: List<CartItem>) {
-        var totalPrice = 0.0
-        var totalDiscountedPrice = 0.0
-        var totalDiscount = 0.0
+        totalPrice = 0.0
+        totalDiscountedPrice = 0.0
+        totalDiscount = 0.0
 
         val productsToFetch = cartItems.map { it.productId }
 

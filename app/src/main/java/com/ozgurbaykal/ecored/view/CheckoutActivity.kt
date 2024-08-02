@@ -4,15 +4,19 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.ozgurbaykal.ecored.R
 import com.ozgurbaykal.ecored.databinding.ActivityCheckoutBinding
 import com.ozgurbaykal.ecored.model.Address
 import com.ozgurbaykal.ecored.model.CreditCard
 import com.ozgurbaykal.ecored.model.User
+import com.ozgurbaykal.ecored.view.adapter.CartAdapter
 import com.ozgurbaykal.ecored.view.customs.AddAddressDialog
 import com.ozgurbaykal.ecored.view.customs.AddCardDialog
+import com.ozgurbaykal.ecored.viewmodel.CommonViewModel
 import com.ozgurbaykal.ecored.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,8 +24,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class CheckoutActivity : BaseActivity() {
 
     private lateinit var binding: ActivityCheckoutBinding
-
     private val userViewModel: UserViewModel by viewModels()
+    private val commonViewModel: CommonViewModel by viewModels()
 
     private val TAG = "CheckoutActivityTAG"
     private val REQUEST_CODE_SELECT_ADDRESS = 1
@@ -30,6 +34,8 @@ class CheckoutActivity : BaseActivity() {
     private var selectedAddress: Address? = null
     private var selectedCard: CreditCard? = null
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,6 +43,8 @@ class CheckoutActivity : BaseActivity() {
         val view = binding.root
         setContentView(view)
         FirebaseAuth.getInstance().currentUser?.let { userViewModel.fetchUser(it.uid) }
+
+        setupCartRecyclerView()
 
         binding.addNewCardButton.setOnClickListener {
             val dialog = AddCardDialog(this, userViewModel)
@@ -64,7 +72,48 @@ class CheckoutActivity : BaseActivity() {
             finish()
         }
 
+        binding.pricesLayout.setOnClickListener {
+            if (binding.totalDiscount.visibility == View.GONE) {
+                binding.totalDiscount.visibility = View.VISIBLE
+                binding.totalPriceBeforeDiscount.visibility = View.VISIBLE
+                binding.arrowIcon.setImageResource(R.drawable.arrow_down)
+            } else {
+                binding.totalDiscount.visibility = View.GONE
+                binding.totalPriceBeforeDiscount.visibility = View.GONE
+                binding.arrowIcon.setImageResource(R.drawable.arrow_up)
+            }
+        }
+
+        val totalPrice = intent.getDoubleExtra("totalPrice", 0.0)
+        val totalDiscountedPrice = intent.getDoubleExtra("totalDiscountedPrice", 0.0)
+        val totalDiscount = intent.getDoubleExtra("totalDiscount", 0.0)
+
+        binding.calculatedTotalPrice.text = String.format("$%.2f", totalDiscountedPrice)
+        binding.totalPriceBeforeDiscount.text = String.format("$%.2f", totalPrice)
+        binding.totalDiscount.text = String.format("-$%.2f", totalDiscount)
+
         observeUserChanges()
+    }
+
+    private fun setupCartRecyclerView() {
+        val cartAdapter = CartAdapter(
+            this,
+            emptyList(),
+            onIncreaseClick = { },
+            onDecreaseClick = { },
+            fetchProductDetails = { productId, callback ->
+                commonViewModel.getProductById(productId, callback)
+            },
+            isCheckoutActivity = true
+        )
+        binding.cartRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.cartRecyclerView.adapter = cartAdapter
+
+        userViewModel.currentUser.observe(this) { user ->
+            user?.let {
+                cartAdapter.updateItems(it.cart)
+            }
+        }
     }
 
     private fun observeUserChanges() {
@@ -97,7 +146,6 @@ class CheckoutActivity : BaseActivity() {
         if (currentUser != null) {
             userViewModel.fetchUser(currentUser.uid)
         }
-
     }
 
     private fun updateUIWithUserDetails(user: User) {

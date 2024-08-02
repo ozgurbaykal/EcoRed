@@ -78,7 +78,7 @@
     <string name="address_already_used">Address title already used. Change the title!</string>
     <string name="card_already_used">Card title already used. Change the title!</string>
 
-    <string name="add_new_address">Add New Address</string>
+    <string name="add_new_address">+ Add New Address</string>
     <string name="contact_info">Contact information</string>
     <string name="address_info">Address information</string>
     <string name="city">City</string>
@@ -87,7 +87,7 @@
     <string name="address_title">Address Title</string>
     <string name="save_address">Save Address</string>
 
-    <string name="add_new_card">Add New Card</string>
+    <string name="add_new_card">+ Add New Card</string>
     <string name="card_number">Card Number</string>
     <string name="exp_date">Expiration Date</string>
     <string name="card_title">Card Title</string>
@@ -96,5 +96,9 @@
 
     <string name="addresses">Addresses</string>
     <string name="cards">Credit Cards</string>
+    <string name="amount_with_count">Amount: %1$d</string>
+
+    <string name="card_info">Card Information</string>
+    <string name="your_products">Your Products</string>
 
 </resources>
