@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
+import com.ozgurbaykal.ecored.R
 import com.ozgurbaykal.ecored.databinding.ActivityListAddressOrCardBinding
 import com.ozgurbaykal.ecored.model.User
 import com.ozgurbaykal.ecored.view.adapter.AddressOrCardAdapter
@@ -71,18 +72,31 @@ class ListAddressOrCardActivity : BaseActivity() {
     }
 
     private fun setupRecyclerView(type: String) {
-        adapter = AddressOrCardAdapter(type, this::onItemEdit, this::onItemDelete, this::onItemClick)
+        adapter =
+            AddressOrCardAdapter(type, this::onItemEdit, this::onItemDelete, this::onItemClick)
         binding.itemRecycler.layoutManager = LinearLayoutManager(this)
         binding.itemRecycler.adapter = adapter
     }
 
     private fun updateUIWithUserDetails(user: User) {
         if (type == "addresses") {
-            adapter.setItems(user.addresses.map { address -> AddressOrCardItem.AddressItem(addressTitle = address.addressTitle, detail = address.address, address = address) })
-            binding.title.text = "Addresses"
+            adapter.setItems(user.addresses.map { address ->
+                AddressOrCardItem.AddressItem(
+                    addressTitle = address.addressTitle,
+                    detail = address.address,
+                    address = address
+                )
+            })
+            binding.title.text = getString(R.string.addresses)
         } else {
-            adapter.setItems(user.creditCards.map { card -> AddressOrCardItem.CardItem(cardTitle = card.cardTitle, detail = "**** **** **** ${card.cardNumber.takeLast(4)}", card = card) })
-            binding.title.text = "Credit Cards"
+            adapter.setItems(user.creditCards.map { card ->
+                AddressOrCardItem.CardItem(
+                    cardTitle = card.cardTitle,
+                    detail = "**** **** **** ${card.cardNumber.takeLast(4)}",
+                    card = card
+                )
+            })
+            binding.title.text = getString(R.string.cards)
         }
     }
 
@@ -92,6 +106,7 @@ class ListAddressOrCardActivity : BaseActivity() {
                 val dialog = AddAddressDialog(this, userViewModel)
                 dialog.showDialog(item.address)
             }
+
             is AddressOrCardItem.CardItem -> {
                 val dialog = AddCardDialog(this, userViewModel)
                 dialog.showDialog(item.card)
@@ -104,6 +119,7 @@ class ListAddressOrCardActivity : BaseActivity() {
             is AddressOrCardItem.AddressItem -> {
                 userViewModel.deleteAddress(item.address)
             }
+
             is AddressOrCardItem.CardItem -> {
                 userViewModel.deleteCreditCard(item.card)
             }
@@ -116,6 +132,7 @@ class ListAddressOrCardActivity : BaseActivity() {
             is AddressOrCardItem.AddressItem -> {
                 resultIntent.putExtra("selected_address", item.address)
             }
+
             is AddressOrCardItem.CardItem -> {
                 resultIntent.putExtra("selected_card", item.card)
             }

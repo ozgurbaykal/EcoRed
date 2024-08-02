@@ -19,10 +19,12 @@ class AddressOrCardAdapter(
 
     private var items: List<AddressOrCardItem> = listOf()
 
-    inner class ViewHolder(val binding: ItemAddressOrCardBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(val binding: ItemAddressOrCardBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemAddressOrCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemAddressOrCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -36,8 +38,9 @@ class AddressOrCardAdapter(
 
                 // holder.binding.editButton.setOnClickListener { onItemEdit(item) }
                 holder.binding.deleteButton.setOnClickListener { onItemDelete(item) }
-                holder.binding.root.setOnClickListener { onItemClick(item) } // Item click listener eklendi
+                holder.binding.root.setOnClickListener { onItemClick(item) }
             }
+
             is AddressOrCardItem.CardItem -> {
                 holder.binding.titleText.text = item.cardTitle
                 holder.binding.detailText.text = item.detail
@@ -45,7 +48,7 @@ class AddressOrCardAdapter(
 
                 // holder.binding.editButton.setOnClickListener { onItemEdit(item) }
                 holder.binding.deleteButton.setOnClickListener { onItemDelete(item) }
-                holder.binding.root.setOnClickListener { onItemClick(item) } // Item click listener eklendi
+                holder.binding.root.setOnClickListener { onItemClick(item) }
             }
         }
     }
@@ -61,7 +64,6 @@ class AddressOrCardAdapter(
         return items[position]
     }
 }
-
 
 
 @Parcelize

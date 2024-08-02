@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import com.google.firebase.auth.FirebaseAuth
+import com.ozgurbaykal.ecored.R
 import com.ozgurbaykal.ecored.databinding.ActivityCheckoutBinding
 import com.ozgurbaykal.ecored.model.Address
 import com.ozgurbaykal.ecored.model.CreditCard
@@ -59,6 +60,10 @@ class CheckoutActivity : BaseActivity() {
             startActivityForResult(intent, REQUEST_CODE_SELECT_CARD)
         }
 
+        binding.backButton.setOnClickListener {
+            finish()
+        }
+
         observeUserChanges()
     }
 
@@ -107,8 +112,8 @@ class CheckoutActivity : BaseActivity() {
             binding.addressTitleName.text = selectedAddress?.addressTitle
             binding.addressDetail.text = selectedAddress?.address
         } else {
-            binding.addressTitleName.text = "No Address"
-            binding.addressDetail.text = "Please add an address"
+            binding.addressTitleName.text = getString(R.string.no_address)
+            binding.addressDetail.text = getString(R.string.please_add_address)
         }
 
         if (selectedCard == null && user.creditCards.isNotEmpty()) {
@@ -120,8 +125,8 @@ class CheckoutActivity : BaseActivity() {
             binding.cardTitleName.text = selectedCard?.cardTitle
             binding.cardNumber.text = "**** **** **** ${selectedCard?.cardNumber?.takeLast(4)}"
         } else {
-            binding.cardTitleName.text = "No Card"
-            binding.cardNumber.text = "Please add a card"
+            binding.cardTitleName.text = getString(R.string.no_card)
+            binding.cardNumber.text = getString(R.string.please_add_card)
         }
     }
 
@@ -137,6 +142,7 @@ class CheckoutActivity : BaseActivity() {
                         binding.addressDetail.text = it.address
                     }
                 }
+
                 REQUEST_CODE_SELECT_CARD -> {
                     val selectedCard = data?.getParcelableExtra<CreditCard>("selected_card")
                     selectedCard?.let {

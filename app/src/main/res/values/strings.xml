@@ -70,5 +70,31 @@
     <string name="checkout">Checkout</string>
     <string name="complete_payment">Complete Payment</string>
 
+    <string name="no_card">No Card</string>
+    <string name="please_add_card">Please add a card</string>
+    <string name="no_address">No Address</string>
+    <string name="please_add_address">Please add an address</string>
+
+    <string name="address_already_used">Address title already used. Change the title!</string>
+    <string name="card_already_used">Card title already used. Change the title!</string>
+
+    <string name="add_new_address">Add New Address</string>
+    <string name="contact_info">Contact information</string>
+    <string name="address_info">Address information</string>
+    <string name="city">City</string>
+    <string name="state">State</string>
+    <string name="detailed_address">Detailed Address</string>
+    <string name="address_title">Address Title</string>
+    <string name="save_address">Save Address</string>
+
+    <string name="add_new_card">Add New Card</string>
+    <string name="card_number">Card Number</string>
+    <string name="exp_date">Expiration Date</string>
+    <string name="card_title">Card Title</string>
+    <string name="title">Title</string>
+    <string name="save_card">Save Card</string>
+
+    <string name="addresses">Addresses</string>
+    <string name="cards">Credit Cards</string>
 
 </resources>
