@@ -74,6 +74,7 @@
                 android:maxLength="256"
                 android:padding="15dp"
                 android:textColor="@color/black"
+                android:textSize="12sp"
                 android:textColorHint="#5E5E5E" />
 
             <LinearLayout
@@ -95,6 +96,7 @@
                     android:hint="@string/name"
                     android:inputType="text"
                     android:maxLength="60"
+                    android:textSize="12sp"
                     android:padding="15dp"
                     android:textColor="@color/black"
                     android:textColorHint="#5E5E5E" />
@@ -109,6 +111,7 @@
                     android:background="@drawable/edittext_background"
                     android:fontFamily="sans-serif"
                     android:hint="@string/last_name"
+                    android:textSize="12sp"
                     android:inputType="text"
                     android:maxLength="60"
                     android:padding="15dp"
@@ -138,6 +141,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_background"
+                    android:textSize="12sp"
                     android:inputType="textPassword"
                     android:maxLength="30"
                     android:textColor="@color/black" />
@@ -247,6 +251,7 @@
                     android:background="@drawable/edittext_background"
                     android:inputType="textPassword"
                     android:maxLength="30"
+                    android:textSize="12sp"
                     android:textColor="@color/black" />
 
 
@@ -340,7 +345,7 @@
                 android:text="@string/sign_up"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
 
             <LinearLayout

@@ -3,7 +3,7 @@ package com.ozgurbaykal.ecored.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.auth.FirebaseAuth
-import com.ozgurbaykal.ecored.Order
+import com.ozgurbaykal.ecored.model.Order
 import com.ozgurbaykal.ecored.model.Address
 import com.ozgurbaykal.ecored.model.CartItem
 import com.ozgurbaykal.ecored.model.CreditCard
@@ -79,7 +79,16 @@ class UserRepository @Inject constructor(
             val updatedOrders = user?.orders?.toMutableList() ?: mutableListOf()
             updatedOrders.add(order)
             transaction.update(userRef, "orders", updatedOrders)
-            transaction.update(userRef, "cart", emptyList<CartItem>()) // Clear the cart
+            transaction.update(userRef, "cart", emptyList<CartItem>()) // Clear the cart after order success
         }.await()
     }
+    suspend fun getOrderHistory(userId: String): List<Order> {
+        val snapshot = db.collection("users")
+            .document(userId)
+            .get()
+            .await()
+        val user = snapshot.toObject(User::class.java)
+        return user?.orders?.reversed() ?: emptyList()
+    }
+
 }

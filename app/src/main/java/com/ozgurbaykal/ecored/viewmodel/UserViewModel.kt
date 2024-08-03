@@ -5,10 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
-import com.ozgurbaykal.ecored.Order
+import com.ozgurbaykal.ecored.model.Order
 import com.ozgurbaykal.ecored.model.Address
 import com.ozgurbaykal.ecored.model.CreditCard
+import com.ozgurbaykal.ecored.model.Product
 import com.ozgurbaykal.ecored.model.User
+import com.ozgurbaykal.ecored.repository.CommonRepository
 import com.ozgurbaykal.ecored.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -17,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class UserViewModel @Inject constructor(
     private val userRepository: UserRepository,
+    private val commonRepository: CommonRepository,
     private val auth: FirebaseAuth
 ) : ViewModel() {
 
@@ -40,6 +43,9 @@ class UserViewModel @Inject constructor(
     private val _isOrderCompleted = MutableLiveData<Boolean>()
     val isOrderCompleted: LiveData<Boolean> get() = _isOrderCompleted
 
+
+    private val _orderHistory = MutableLiveData<List<Order>>()
+    val orderHistory: LiveData<List<Order>> get() = _orderHistory
 
     fun addUser(user: User) {
         _isLoading.value = true
@@ -144,6 +150,31 @@ class UserViewModel @Inject constructor(
                 _isLoading.value = false
                 _isOrderCompleted.value = false
                 _errorMessage.value = e.message
+            }
+        }
+    }
+
+    fun fetchOrderHistory(userId: String) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            try {
+                val orders = userRepository.getOrderHistory(userId)
+                _orderHistory.value = orders
+                _isLoading.value = false
+                _errorMessage.value = null
+            } catch (e: Exception) {
+                _isLoading.value = false
+                _errorMessage.value = e.message
+            }
+        }
+    }
+    fun getProductById(productId: String, callback: (Product?) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val product = commonRepository.getProductById(productId)
+                callback(product)
+            } catch (e: Exception) {
+                callback(null)
             }
         }
     }

@@ -25,6 +25,7 @@ class ListAddressOrCardActivity : BaseActivity() {
     private val userViewModel: UserViewModel by viewModels()
     private lateinit var adapter: AddressOrCardAdapter
     private val type: String by lazy { intent.getStringExtra("type") ?: "addresses" }
+    private val isFromProfile: Boolean by lazy { intent.getBooleanExtra("isFromProfile", false) ?: false }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +51,9 @@ class ListAddressOrCardActivity : BaseActivity() {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
+        
+        if(isFromProfile)
+            binding.backButton.visibility = View.VISIBLE
 
         binding.backButton.setOnClickListener {
             finish()

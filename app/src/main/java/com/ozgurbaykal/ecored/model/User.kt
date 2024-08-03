@@ -2,7 +2,6 @@ package com.ozgurbaykal.ecored.model
 
 
 import com.google.firebase.Timestamp
-import com.ozgurbaykal.ecored.Order
 
 data class User(
     val userId: String = "",

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/button_without_border_with_color_8_radius"
+    android:backgroundTint="@color/white"
+    android:orientation="vertical"
+    android:paddingStart="10dp"
+    android:paddingTop="15dp"
+    android:paddingEnd="10dp"
+    android:paddingBottom="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order Number: "
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/orderNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/orderDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/gray"
+        android:textSize="12sp" />
+
+
+    <LinearLayout
+        android:id="@+id/orderProductImages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/firstImageCard"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            app:cardBackgroundColor="@color/main_red"
+            app:cardCornerRadius="7dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_gravity="center"
+                app:cardCornerRadius="7dp">
+
+                <ImageView
+                    android:id="@+id/firstImage"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/loading_ecored" />
+            </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/secondImageCard"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            app:cardBackgroundColor="@color/main_red"
+            app:cardCornerRadius="7dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_gravity="center"
+                app:cardCornerRadius="7dp">
+
+                <ImageView
+                    android:id="@+id/secondImage"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/loading_ecored" />
+            </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/isMoreThanTwoProduct"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="@color/main_red"
+            app:cardCornerRadius="7dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_gravity="center"
+                app:cardBackgroundColor="#A4A4A4"
+                app:cardCornerRadius="7dp">
+
+                <TextView
+                    android:id="@+id/ifMoreThanTwoProduct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="+1"
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
+
+            </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            android:id="@+id/orderTotalPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="12sp" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

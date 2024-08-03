@@ -14,13 +14,10 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
-import com.ozgurbaykal.ecored.Order
+import com.ozgurbaykal.ecored.model.Order
 import com.ozgurbaykal.ecored.R
 import com.ozgurbaykal.ecored.databinding.ActivityCheckoutBinding
 import com.ozgurbaykal.ecored.model.Address
-import com.ozgurbaykal.ecored.model.CartItem
 import com.ozgurbaykal.ecored.model.CreditCard
 import com.ozgurbaykal.ecored.model.User
 import com.ozgurbaykal.ecored.view.adapter.CartAdapter
@@ -30,7 +27,6 @@ import com.ozgurbaykal.ecored.viewmodel.CommonViewModel
 import com.ozgurbaykal.ecored.viewmodel.UserViewModel
 import com.ozgurbaykal.paymentsdk.PaymentCallback
 import com.ozgurbaykal.paymentsdk.PaymentSDK
-import dagger.hilt.android.AndroidEntryPoint
 
 
 class CheckoutActivity : BaseActivity() {

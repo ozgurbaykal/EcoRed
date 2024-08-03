@@ -103,6 +103,24 @@
 
     <string name="verify_otp">We send code to  %1$s, please enter the code and verify.</string>
     <string name="order_success">Successfully ordered. Thank you!</string>
+    <string name="account_created">Account Created: %1$s</string>
 
+    <string name="pass_change_success">Password changed successfully.</string>
+    <string name="pass_change_failed">Password change failed, try again.</string>
+
+    <string name="order_history">Order History</string>
+    <string name="products_in_order">Products In Order</string>
+    <string name="order_detail">Order Detail</string>
+
+    <string name="change_password">Change Password</string>
+
+    <string name="old_pass">Old Password</string>
+    <string name="new_pass">New Password</string>
+    <string name="new_pass_again">New Password Again</string>
+
+    <string name="my_addresses">My Addresses</string>
+    <string name="my_cards">My Credit Cards</string>
+
+    <string name="log_out">Log out</string>
 
 </resources>

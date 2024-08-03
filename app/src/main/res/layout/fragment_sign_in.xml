@@ -64,6 +64,7 @@
             android:background="@drawable/edittext_background"
             android:fontFamily="sans-serif"
             android:hint="@string/mail"
+            android:textSize="12sp"
             android:inputType="textEmailAddress"
             android:maxLength="256"
             android:padding="15dp"
@@ -92,6 +93,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext_background"
                 android:inputType="textPassword"
+                android:textSize="12sp"
                 android:maxLength="30"
                 android:textColor="@color/black" />
 
@@ -111,7 +113,7 @@
             android:text="@string/sign_in"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
 
         <LinearLayout

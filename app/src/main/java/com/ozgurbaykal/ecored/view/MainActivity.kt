@@ -17,6 +17,7 @@ import com.ozgurbaykal.ecored.view.customs.DialogTypes
 import com.ozgurbaykal.ecored.view.fragment.CartFragment
 import com.ozgurbaykal.ecored.view.fragment.HomeFragment
 import com.ozgurbaykal.ecored.view.fragment.ProductListFragment
+import com.ozgurbaykal.ecored.view.fragment.ProfileFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -59,6 +60,7 @@ class MainActivity : BaseActivity() {
                     true
                 }
                 R.id.navigation_account -> {
+                    changeFragment(ProfileFragment(), R.id.mainActivityFragmentView, "ProfileFragmentTAG")
                     true
                 }
                 else -> false
@@ -74,6 +76,9 @@ class MainActivity : BaseActivity() {
                     showHomeFragment()
                     binding.bottomNavigationView.selectedItemId = R.id.navigation_home
                 } else if (fragment is CartFragment) {
+                    showHomeFragment()
+                    binding.bottomNavigationView.selectedItemId = R.id.navigation_home
+                } else if (fragment is ProfileFragment) {
                     showHomeFragment()
                     binding.bottomNavigationView.selectedItemId = R.id.navigation_home
                 } else {
