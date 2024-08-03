@@ -42,6 +42,12 @@ android {
     }
 }
 
+/*repositories {
+    flatDir {
+        dirs("libs")
+    }
+}*/
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -52,7 +58,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
 
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
@@ -65,6 +70,10 @@ dependencies {
     implementation("androidx.viewpager2:viewpager2:1.1.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.google.firebase:firebase-firestore")
+
+    //implementation("com.ozgurbaykal", name = "paymentsdk",  ext = "aar")
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar"))))
+
 }
 
 kapt {

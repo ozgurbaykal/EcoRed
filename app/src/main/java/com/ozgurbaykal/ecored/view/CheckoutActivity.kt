@@ -1,16 +1,26 @@
 package com.ozgurbaykal.ecored.view
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
+import com.ozgurbaykal.ecored.Order
 import com.ozgurbaykal.ecored.R
 import com.ozgurbaykal.ecored.databinding.ActivityCheckoutBinding
 import com.ozgurbaykal.ecored.model.Address
+import com.ozgurbaykal.ecored.model.CartItem
 import com.ozgurbaykal.ecored.model.CreditCard
 import com.ozgurbaykal.ecored.model.User
 import com.ozgurbaykal.ecored.view.adapter.CartAdapter
@@ -18,9 +28,11 @@ import com.ozgurbaykal.ecored.view.customs.AddAddressDialog
 import com.ozgurbaykal.ecored.view.customs.AddCardDialog
 import com.ozgurbaykal.ecored.viewmodel.CommonViewModel
 import com.ozgurbaykal.ecored.viewmodel.UserViewModel
+import com.ozgurbaykal.paymentsdk.PaymentCallback
+import com.ozgurbaykal.paymentsdk.PaymentSDK
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
+
 class CheckoutActivity : BaseActivity() {
 
     private lateinit var binding: ActivityCheckoutBinding
@@ -33,8 +45,7 @@ class CheckoutActivity : BaseActivity() {
 
     private var selectedAddress: Address? = null
     private var selectedCard: CreditCard? = null
-
-
+    private var totalDiscountedPrice = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,15 +96,93 @@ class CheckoutActivity : BaseActivity() {
         }
 
         val totalPrice = intent.getDoubleExtra("totalPrice", 0.0)
-        val totalDiscountedPrice = intent.getDoubleExtra("totalDiscountedPrice", 0.0)
+        totalDiscountedPrice = intent.getDoubleExtra("totalDiscountedPrice", 0.0)
         val totalDiscount = intent.getDoubleExtra("totalDiscount", 0.0)
 
         binding.calculatedTotalPrice.text = String.format("$%.2f", totalDiscountedPrice)
         binding.totalPriceBeforeDiscount.text = String.format("$%.2f", totalPrice)
         binding.totalDiscount.text = String.format("-$%.2f", totalDiscount)
 
+        binding.commpletePayment.setOnClickListener {
+            selectedCard?.let { card ->
+                PaymentSDK.startPayment(card.cardNumber, card.expirationYear, card.ccv, totalPrice, object : PaymentCallback {
+                    override fun onSuccess() {
+                        runOnUiThread {
+                            showOtpDialog()
+                        }
+                    }
+
+                    override fun onFailure(error: String) {
+                        Toast.makeText(this@CheckoutActivity, error, Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }
+        }
+
         observeUserChanges()
     }
+
+    private fun showOtpDialog() {
+        val dialog = Dialog(this@CheckoutActivity)
+        dialog.setContentView(R.layout.otp_verification_dialog)
+        dialog.window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.setCancelable(true)
+
+        val otpInput = dialog.findViewById<EditText>(R.id.cardNumberInput)
+        val verifyButton = dialog.findViewById<Button>(R.id.addToCart)
+        val sendOtpText = dialog.findViewById<TextView>(R.id.sendOtpNumber)
+        val progressBar = dialog.findViewById<View>(R.id.progressBar)
+
+        sendOtpText.text = this@CheckoutActivity.getString(R.string.verify_otp, selectedAddress?.phoneNumber)
+
+        verifyButton.setOnClickListener {
+            val otp = otpInput.text.toString()
+            progressBar.visibility = View.VISIBLE
+            PaymentSDK.confirmPayment(otp, object : PaymentCallback {
+                override fun onSuccess() {
+                    runOnUiThread {
+                        progressBar.visibility = View.GONE
+                        dialog.dismiss()
+                        completeOrder()
+                    }
+
+                }
+
+                override fun onFailure(error: String) {
+                    runOnUiThread {
+                        progressBar.visibility = View.GONE
+                        Toast.makeText(this@CheckoutActivity, error, Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+            })
+        }
+
+        dialog.show()
+    }
+
+    private fun completeOrder() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId != null && selectedAddress != null && selectedCard != null) {
+            val order = Order(
+                address = selectedAddress!!,
+                card = selectedCard!!,
+                totalPrice = totalDiscountedPrice,
+                items = userViewModel.currentUser.value?.cart ?: emptyList()
+            )
+
+            userViewModel.completeOrder(order)
+        }
+
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            putExtra("SHOW_HOME_FRAGMENT", true)
+        }
+        startActivity(intent)
+        finish()
+    }
+
 
     private fun setupCartRecyclerView() {
         val cartAdapter = CartAdapter(
@@ -133,6 +222,15 @@ class CheckoutActivity : BaseActivity() {
         userViewModel.isCardAdded.observe(this) { isAdded ->
             if (isAdded) {
                 fetchUserDetails()
+            }
+        }
+
+        userViewModel.isOrderCompleted.observe(this) { isCompleted ->
+            if (isCompleted == true) {
+                Toast.makeText(this, "Order completed successfully!", Toast.LENGTH_SHORT).show()
+                finish()
+            } else {
+                Toast.makeText(this, "Failed to complete order", Toast.LENGTH_SHORT).show()
             }
         }
     }

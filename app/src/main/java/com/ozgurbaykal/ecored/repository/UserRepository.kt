@@ -3,7 +3,9 @@ package com.ozgurbaykal.ecored.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.auth.FirebaseAuth
+import com.ozgurbaykal.ecored.Order
 import com.ozgurbaykal.ecored.model.Address
+import com.ozgurbaykal.ecored.model.CartItem
 import com.ozgurbaykal.ecored.model.CreditCard
 import com.ozgurbaykal.ecored.model.User
 import kotlinx.coroutines.tasks.await
@@ -69,5 +71,15 @@ class UserRepository @Inject constructor(
         }.await()
     }
 
-
+    suspend fun addOrder(userId: String, order: Order) {
+        val userRef = db.collection("users").document(userId)
+        db.runTransaction { transaction ->
+            val snapshot = transaction.get(userRef)
+            val user = snapshot.toObject(User::class.java)
+            val updatedOrders = user?.orders?.toMutableList() ?: mutableListOf()
+            updatedOrders.add(order)
+            transaction.update(userRef, "orders", updatedOrders)
+            transaction.update(userRef, "cart", emptyList<CartItem>()) // Clear the cart
+        }.await()
+    }
 }

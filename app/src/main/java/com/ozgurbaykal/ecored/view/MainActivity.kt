@@ -12,6 +12,8 @@ import com.ozgurbaykal.ecored.R
 import com.ozgurbaykal.ecored.databinding.ActivityLoginBinding
 import com.ozgurbaykal.ecored.databinding.ActivityMainBinding
 import com.ozgurbaykal.ecored.util.SharedPreferencesHelper
+import com.ozgurbaykal.ecored.view.customs.CustomDialogFragment
+import com.ozgurbaykal.ecored.view.customs.DialogTypes
 import com.ozgurbaykal.ecored.view.fragment.CartFragment
 import com.ozgurbaykal.ecored.view.fragment.HomeFragment
 import com.ozgurbaykal.ecored.view.fragment.ProductListFragment
@@ -21,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    var customToast: CustomDialogFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +31,8 @@ class MainActivity : BaseActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        customToast = CustomDialogFragment(this)
 
         val isFirstLogin = SharedPreferencesHelper.getBoolean(SharedPreferencesHelper.KEY_IS_FIRST_RUN, true)
 
@@ -39,9 +44,7 @@ class MainActivity : BaseActivity() {
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_home -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.mainActivityFragmentView, HomeFragment(), "HomeFragmentTAG")
-                        .commit()
+                    showHomeFragment()
                     true
                 }
                 R.id.navigation_favorites -> {
@@ -68,14 +71,10 @@ class MainActivity : BaseActivity() {
             override fun handleOnBackPressed() {
                 val fragment = supportFragmentManager.findFragmentById(R.id.mainActivityFragmentView)
                 if (fragment is ProductListFragment && fragment.arguments?.getString("caller") == "favoritesButton") {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.mainActivityFragmentView, HomeFragment(), "HomeFragmentTAG")
-                        .commit()
+                    showHomeFragment()
                     binding.bottomNavigationView.selectedItemId = R.id.navigation_home
                 } else if (fragment is CartFragment) {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.mainActivityFragmentView, HomeFragment(), "HomeFragmentTAG")
-                        .commit()
+                    showHomeFragment()
                     binding.bottomNavigationView.selectedItemId = R.id.navigation_home
                 } else {
                     if (supportFragmentManager.backStackEntryCount > 0) {
@@ -86,5 +85,33 @@ class MainActivity : BaseActivity() {
                 }
             }
         })
+
+        handleIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent?) {
+        val showHomeFragment = intent?.getBooleanExtra("SHOW_HOME_FRAGMENT", false) ?: false
+        if (showHomeFragment) {
+
+            customToast?.show(
+                getString(R.string.success),
+                getString(R.string.order_success),
+                dialogType = DialogTypes.SUCCESS
+            )
+
+            showHomeFragment()
+            binding.bottomNavigationView.selectedItemId = R.id.navigation_home
+        }
+    }
+
+    private fun showHomeFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.mainActivityFragmentView, HomeFragment(), "HomeFragmentTAG")
+            .commit()
     }
 }

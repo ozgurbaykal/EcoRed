@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
+import com.ozgurbaykal.ecored.Order
 import com.ozgurbaykal.ecored.model.Address
 import com.ozgurbaykal.ecored.model.CreditCard
 import com.ozgurbaykal.ecored.model.User
@@ -34,6 +35,11 @@ class UserViewModel @Inject constructor(
 
     private val _isAddressAdded = MutableLiveData<Boolean>()
     val isAddressAdded: LiveData<Boolean> get() = _isAddressAdded
+
+
+    private val _isOrderCompleted = MutableLiveData<Boolean>()
+    val isOrderCompleted: LiveData<Boolean> get() = _isOrderCompleted
+
 
     fun addUser(user: User) {
         _isLoading.value = true
@@ -121,6 +127,22 @@ class UserViewModel @Inject constructor(
                 _isLoading.value = false
             } catch (e: Exception) {
                 _isLoading.value = false
+                _errorMessage.value = e.message
+            }
+        }
+    }
+
+    fun completeOrder(order: Order) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            try {
+                userRepository.addOrder(auth.currentUser?.uid ?: return@launch, order)
+                _isLoading.value = false
+                _isOrderCompleted.value = true
+                _errorMessage.value = null
+            } catch (e: Exception) {
+                _isLoading.value = false
+                _isOrderCompleted.value = false
                 _errorMessage.value = e.message
             }
         }

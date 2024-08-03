@@ -101,4 +101,8 @@
     <string name="card_info">Card Information</string>
     <string name="your_products">Your Products</string>
 
+    <string name="verify_otp">We send code to  %1$s, please enter the code and verify.</string>
+    <string name="order_success">Successfully ordered. Thank you!</string>
+
+
 </resources>

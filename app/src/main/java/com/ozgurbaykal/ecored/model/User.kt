@@ -2,6 +2,7 @@ package com.ozgurbaykal.ecored.model
 
 
 import com.google.firebase.Timestamp
+import com.ozgurbaykal.ecored.Order
 
 data class User(
     val userId: String = "",
@@ -14,5 +15,7 @@ data class User(
     val favorites: List<String> = emptyList(),
     val cart: List<CartItem> = emptyList(),
     val creditCards: List<CreditCard> = emptyList(),
-    val addresses: List<Address> = emptyList()
+    val addresses: List<Address> = emptyList(),
+    val orders: List<Order> = emptyList()
+
 )
