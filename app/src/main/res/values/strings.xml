@@ -123,4 +123,9 @@
 
     <string name="log_out">Log out</string>
 
+    <string name="invalid_card_number">Invalid card number</string>
+    <string name="invalid_month">Invalid month</string>
+    <string name="invalid_year">Invalid year</string>
+    <string name="invalid_ccv">Invalid CCV</string>
+
 </resources>

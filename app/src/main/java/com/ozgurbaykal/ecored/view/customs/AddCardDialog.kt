@@ -57,6 +57,11 @@ class AddCardDialog(context: Context, private val userViewModel: UserViewModel) 
     }
 
     private fun emptyAndValidateInputControl(editTextArray: List<EditText>): Boolean {
+        val cardNumberPattern = Regex("^[0-9]{16}\$")
+        val monthPattern = Regex("^(0[1-9]|1[0-2])\$")
+        val yearPattern = Regex("^[0-9]{4}\$")
+        val ccvPattern = Regex("^[0-9]{3}\$")
+
         for (editText in editTextArray) {
             if (editText.text?.isEmpty() == true) {
                 editText.postInvalidate()
@@ -66,6 +71,31 @@ class AddCardDialog(context: Context, private val userViewModel: UserViewModel) 
                 editText.setBackgroundResource(R.drawable.edittext_background)
             }
         }
+
+        if (!cardNumberPattern.matches(dialogBinding.cardNumberInput.text.toString())) {
+            Toast.makeText(context, context.getString(R.string.invalid_card_number), Toast.LENGTH_SHORT).show()
+            dialogBinding.cardNumberInput.error = context.getString(R.string.invalid_card_number)
+            return false
+        }
+
+        if (!monthPattern.matches(dialogBinding.monthExpDateInput.text.toString())) {
+            Toast.makeText(context, context.getString(R.string.invalid_month), Toast.LENGTH_SHORT).show()
+            dialogBinding.monthExpDateInput.error = context.getString(R.string.invalid_month)
+            return false
+        }
+
+        if (!yearPattern.matches(dialogBinding.yearExpDateInput.text.toString())) {
+            Toast.makeText(context, context.getString(R.string.invalid_year), Toast.LENGTH_SHORT).show()
+            dialogBinding.yearExpDateInput.error = context.getString(R.string.invalid_year)
+            return false
+        }
+
+        if (!ccvPattern.matches(dialogBinding.ccvNumberInput.text.toString())) {
+            Toast.makeText(context, context.getString(R.string.invalid_ccv), Toast.LENGTH_SHORT).show()
+            dialogBinding.ccvNumberInput.error = context.getString(R.string.invalid_ccv)
+            return false
+        }
+
         return true
     }
 
