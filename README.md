@@ -3,6 +3,7 @@
 
 # EcoRed - E-Commerce App
 EcoRed is a sample e-commerce application that works with dummy data integrated with Firebase.
+- [APK Release](https://github.com/ozgurbaykal/EcoRed/releases/tag/EcoRed-Releases) 🔗
 
 ### Technologies and frameworks used in the application
 
